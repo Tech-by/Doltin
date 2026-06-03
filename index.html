@@ -53,14 +53,13 @@
       padding: 0 1.5rem;
     }
 
-    /* Navigation - mobile first */
+    /* ========== HAMBURGER NAVIGATION ========== */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
       padding: 1rem 1.5rem;
-      background: rgba(5,5,5,0.92);
+      background: rgba(5,5,5,0.95);
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
@@ -73,13 +72,30 @@
       font-family: 'Cormorant Garamond', serif;
       letter-spacing: 1px;
       color: var(--cream);
+      z-index: 1001;
     }
     .logo span { color: var(--gold); }
+
+    /* Hamburger icon */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    .hamburger span {
+      width: 28px;
+      height: 2px;
+      background: var(--gold);
+      margin: 5px 0;
+      transition: 0.3s;
+    }
+    /* Navigation links */
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 2rem;
       list-style: none;
-      flex-wrap: wrap;
+      transition: all 0.3s ease;
     }
     .nav-links a {
       text-decoration: none;
@@ -89,6 +105,62 @@
       transition: 0.2s;
     }
     .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* Mobile styles */
+    @media (max-width: 850px) {
+      .hamburger {
+        display: flex;
+      }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(0,0,0,0.96);
+        backdrop-filter: blur(12px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: left 0.3s ease-in-out;
+        z-index: 1000;
+      }
+      .nav-links.active {
+        left: 0;
+      }
+      .nav-links li {
+        margin: 0;
+      }
+      .navbar {
+        padding: 0.8rem 1.2rem;
+      }
+      .hero-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+      .hero-content p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .btn-group {
+        justify-content: center;
+      }
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+    }
+    @media (max-width: 550px) {
+      .container {
+        padding: 0 1rem;
+      }
+      .gallery-item img {
+        height: 280px;
+      }
+    }
 
     /* Hero */
     .hero {
@@ -154,6 +226,7 @@
       box-shadow: var(--shadow-elegant);
       border: 1px solid rgba(198,164,63,0.4);
       object-fit: cover;
+      aspect-ratio: 4 / 3;
     }
 
     /* Craftsmanship */
@@ -174,7 +247,7 @@
     .craft-card h3 { font-size: 1.5rem; margin-bottom: 0.8rem; }
     .craft-card:hover { border-bottom-color: var(--gold); background: #181818; transform: translateY(-4px); }
 
-    /* Gallery Sections - men attire & senator */
+    /* Gallery Sections */
     .gallery-section { padding: 4rem 0; background: #050505; }
     .gallery-category { margin-bottom: 3rem; }
     .category-header {
@@ -202,7 +275,8 @@
     }
     .gallery-item img {
       width: 100%;
-      height: 360px;
+      height: auto;
+      aspect-ratio: 4 / 3;
       object-fit: cover;
       display: block;
       transition: transform 0.4s ease;
@@ -245,19 +319,6 @@
     }
     .footer { text-align: center; padding: 2rem; border-top: 1px solid #1e1c18; font-size: 0.75rem; }
 
-    @media (max-width: 850px) {
-      .navbar { flex-direction: column; gap: 0.8rem; }
-      .hero-grid { flex-direction: column; text-align: center; }
-      .hero-content p { margin-left: auto; margin-right: auto; }
-      .btn-group { justify-content: center; }
-      .contact-wrapper { grid-template-columns: 1fr; }
-      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-    }
-    @media (max-width: 550px) {
-      .container { padding: 0 1rem; }
-      .gallery-item img { height: 280px; }
-      .nav-links { gap: 1rem; }
-    }
     .gold-sep { width: 50px; height: 2px; background: var(--gold); margin: 1rem 0; }
     .text-center .gold-sep { margin-left: auto; margin-right: auto; }
   </style>
@@ -266,7 +327,12 @@
 
 <nav class="navbar">
   <div class="logo">LAGOS<span>ATELIER</span></div>
-  <ul class="nav-links">
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <ul class="nav-links" id="navLinks">
     <li><a href="#home">HOME</a></li>
     <li><a href="#senator">SENATOR & TRADITIONAL</a></li>
     <li><a href="#contemporary">CONTEMPORARY</a></li>
@@ -276,7 +342,7 @@
 </nav>
 
 <main>
-  <!-- Hero Section with Men's Image -->
+  <!-- Hero Section -->
   <section id="home" class="hero">
     <div class="container hero-grid">
       <div class="hero-content">
@@ -291,7 +357,7 @@
         <p style="font-size: 0.85rem; color:#aa9f8c;">✧ Handcrafted in Lagos | Worldwide delivery ✧</p>
       </div>
       <div class="hero-visual">
-        <img src="afro1.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
+        <img src="https://images.pexels.com/photos/3928304/agbada-man-posing-3928304.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
       </div>
     </div>
   </section>
@@ -308,7 +374,7 @@
     </div>
   </section>
 
-  <!-- SENATOR & TRADITIONAL MEN'S ATTIRE (high-quality images) -->
+  <!-- SENATOR & TRADITIONAL MEN'S ATTIRE -->
   <section id="senator" class="gallery-section">
     <div class="container">
       <div class="gallery-category">
@@ -317,34 +383,68 @@
           <p>Agbada · Senator Sets · Kaftan · Royal Dashiki</p>
         </div>
         <div class="gallery-grid">
-          <!-- Image 1: Senator wear - classic men's -->
           <div class="gallery-item">
-            <img src="Navy Blue royal fila.jfif?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit with embroidery" loading="lazy">
-            <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, complete with fila cap</p></div>
+            <img src="https://images.pexels.com/photos/3850712/man-in-traditional-african-attire-3850712.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit" loading="lazy">
+            <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, fila cap</p></div>
           </div>
-          <!-- Image 2: another senator style -->
           <div class="gallery-item">
-            <img src="afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with intricate embroidery men" loading="lazy">
+            <img src="https://images.pexels.com/photos/3928304/agbada-man-posing-3928304.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with embroidery" loading="lazy">
             <div class="item-caption"><h4>Regal Agbada</h4><p>Premium lace-agbada, pearl buttons, modern senator fit</p></div>
           </div>
-          <!-- Image 3: luxury native wedding -->
           <div class="gallery-item">
-            <img src="afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in traditional aso-oke senator attire" loading="lazy">
+            <img src="https://images.pexels.com/photos/3815501/black-man-in-traditional-attire-3815501.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in aso-oke senator attire" loading="lazy">
             <div class="item-caption"><h4>Afrocentric Senator</h4><p>Custom embroidered velvet senator, hand-finished lapels</p></div>
           </div>
-          <!-- Additional senator to ensure variety -->
           <div class="gallery-item">
-            <img src="afro4.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian gentleman in high-end kaftan senator" loading="lazy">
-            <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with subtle gold embroidery, perfect for weddings</p></div>
+            <img src="https://images.pexels.com/photos/5445803/african-man-in-traditional-clothing-5445803.jpg?auto=compress&cs=tinysrgb&w=800" alt="High-end kaftan senator" loading="lazy">
+            <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with gold embroidery, perfect for weddings</p></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  
+  <!-- CONTEMPORARY MEN'S ATTIRE (restored) -->
+  <section id="contemporary" class="gallery-section" style="background:#0b0b0b;">
+    <div class="container">
+      <div class="gallery-category">
+        <div class="category-header">
+          <h3>✦ MODERN MASTERS — CONTEMPORARY MEN'S WEAR</h3>
+          <p>Bespoke Suits · Tuxedos · Afro-fusion blazers</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/4380976/elegant-man-in-italian-suit-4380976.jpg?auto=compress&cs=tinysrgb&w=800" alt="Tailored suit for men" loading="lazy">
+            <div class="item-caption"><h4>Savile Row Precision</h4><p>Charcoal wool suit, peak lapels, handmade in Lagos</p></div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/1043474/man-in-black-suit-1043474.jpg?auto=compress&cs=tinysrgb&w=800" alt="Executive black suit" loading="lazy">
+            <div class="item-caption"><h4>Lagos Executive</h4><p>Midnight black tuxedo, satin trim, personalized monogram</p></div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/3952222/nigerian-bride-and-groom-in-traditional-attire-3952222.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian groom in modern fusion" loading="lazy">
+            <div class="item-caption"><h4>Afro-Contemporary Groom</h4><p>Agbada meets Italian tailoring — bespoke wedding statement</p></div>
+          </div>
+        </div>
+        <div class="gallery-grid" style="margin-top: 1.8rem;">
+          <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/3240300/man-in-white-suit-3240300.jpg?auto=compress&cs=tinysrgb&w=800" alt="Cream luxury suit" loading="lazy">
+            <div class="item-caption"><h4>Summer Linen Suit</h4><p>Lightweight, breathable, custom-made for destination events</p></div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/2665123/man-wearing-black-suit-2665123.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian style blazer" loading="lazy">
+            <div class="item-caption"><h4>Afro-Tailored Blazer</h4><p>Wool-cashmere blend with subtle aso-oke pocket square</p></div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.pexels.com/photos/5490104/black-man-in-formal-wear-5490104.jpg?auto=compress&cs=tinysrgb&w=800" alt="Modern senator fusion" loading="lazy">
+            <div class="item-caption"><h4>Senator Tuxedo</h4><p>Innovative silhouette: senator collar meets classic tuxedo</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- TESTIMONIAL (men focused) -->
+  <!-- TESTIMONIAL -->
   <div class="testimonial">
     <div class="container">
       <div class="quote">
@@ -390,20 +490,30 @@
 
 <script>
   (function() {
-    // smooth scroll for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        if (targetId === "#") return;
-        const targetElem = document.querySelector(targetId);
-        if (targetElem) {
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+      });
+    }
+    // Close menu when a link is clicked (smooth scroll)
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        navLinks.classList.remove('active');
+        const targetId = link.getAttribute('href');
+        if (targetId && targetId !== '#') {
           e.preventDefault();
-          targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const targetElem = document.querySelector(targetId);
+          if (targetElem) {
+            targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }
       });
     });
 
-    // contact form alert
+    // Contact form alert
     const sendBtn = document.getElementById('sendInquiry');
     if (sendBtn) {
       sendBtn.addEventListener('click', function() {
@@ -420,9 +530,9 @@
       });
     }
 
-    // active nav highlight on scroll (lightweight)
+    // Active nav highlight on scroll
     const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll(".nav-links a");
+    const navLinksArr = document.querySelectorAll(".nav-links a");
     function updateActiveNav() {
       let current = "";
       const scrollPos = window.scrollY + 150;
@@ -433,7 +543,7 @@
           current = section.getAttribute("id");
         }
       });
-      navLinks.forEach(link => {
+      navLinksArr.forEach(link => {
         link.classList.remove("active");
         const href = link.getAttribute("href").substring(1);
         if (href === current) link.classList.add("active");
