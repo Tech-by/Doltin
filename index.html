@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>LAGOS ATELIER | Men's Bespoke Tailor – Nigerian Senator & Luxury Attire</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0A0A0A;
+      color: #E8E6E1;
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --gold: #C6A43F;
+      --gold-light: #DDBF6E;
+      --gold-dark: #A17F2E;
+      --charcoal: #111111;
+      --deep-black: #050505;
+      --cream: #F9F6F0;
+      --shadow-elegant: 0 25px 40px -20px rgba(0,0,0,0.6);
+    }
+
+    h1, h2, h3, .serif {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 600;
+      border-left: 4px solid var(--gold);
+      padding-left: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation - mobile first */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 1rem 1.5rem;
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(198,164,63,0.3);
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 1px;
+      color: var(--cream);
+    }
+    .logo span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: #E8E6E1;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* Hero */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      padding: 3rem 0;
+      background: radial-gradient(circle at 70% 20%, #13100A 0%, #030303 100%);
+    }
+    .hero-grid {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .hero-content { flex: 1; min-width: 260px; }
+    .hero-badge {
+      color: var(--gold);
+      font-weight: 500;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.8rem);
+      line-height: 1.1;
+      margin: 1rem 0;
+      background: linear-gradient(135deg, #FFFFFF 30%, #DDBF6E 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p { color: #ccc9c2; margin-bottom: 1.8rem; max-width: 500px; }
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary, .btn-outline {
+      padding: 0.9rem 1.8rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      border-radius: 0;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: #0A0A0A;
+      border: none;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--gold);
+      color: var(--gold);
+    }
+    .hero-visual { flex: 0.9; min-width: 260px; text-align: center; }
+    .hero-visual img {
+      width: 100%;
+      max-width: 480px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-elegant);
+      border: 1px solid rgba(198,164,63,0.4);
+      object-fit: cover;
+    }
+
+    /* Craftsmanship */
+    .craft-section { padding: 4rem 0; background: #0C0C0C; }
+    .craft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.8rem;
+    }
+    .craft-card {
+      background: #121212;
+      padding: 2rem 1.2rem;
+      text-align: center;
+      transition: 0.2s;
+      border-bottom: 2px solid transparent;
+    }
+    .craft-card i { font-size: 2.2rem; color: var(--gold); margin-bottom: 1rem; }
+    .craft-card h3 { font-size: 1.5rem; margin-bottom: 0.8rem; }
+    .craft-card:hover { border-bottom-color: var(--gold); background: #181818; transform: translateY(-4px); }
+
+    /* Gallery Sections - men attire & senator */
+    .gallery-section { padding: 4rem 0; background: #050505; }
+    .gallery-category { margin-bottom: 3rem; }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid #2a241c;
+      padding-bottom: 0.5rem;
+    }
+    .category-header h3 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 500; color: var(--cream); }
+    .category-header p { color: var(--gold); font-size: 0.8rem; letter-spacing: 1px; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .gallery-item {
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: 0.2s ease;
+      border: 1px solid #26221a;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.02); }
+    .item-caption { padding: 1rem; background: #0f0f0f; }
+    .item-caption h4 { font-size: 1.25rem; color: var(--gold); font-family: 'Cormorant Garamond', serif; }
+    .item-caption p { font-size: 0.8rem; color: #bcb5a6; }
+
+    /* Testimonial */
+    .testimonial { background: #11100e; padding: 4rem 0; text-align: center; }
+    .quote { font-size: clamp(1.2rem, 4vw, 1.6rem); font-family: 'Cormorant Garamond', serif; font-style: italic; max-width: 800px; margin: 0 auto; color: #e3dac9; }
+
+    /* Contact */
+    .contact-section { padding: 4rem 0; background: #0A0A0A; }
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .contact-info h3 { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .contact-detail { display: flex; gap: 1rem; align-items: center; margin: 1rem 0; }
+    .contact-detail i { color: var(--gold); width: 28px; }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      background: #181818;
+      border: 1px solid #2c2a26;
+      padding: 0.9rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .contact-form button {
+      width: 100%;
+      background: var(--gold);
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 0.9rem;
+      cursor: pointer;
+    }
+    .footer { text-align: center; padding: 2rem; border-top: 1px solid #1e1c18; font-size: 0.75rem; }
+
+    @media (max-width: 850px) {
+      .navbar { flex-direction: column; gap: 0.8rem; }
+      .hero-grid { flex-direction: column; text-align: center; }
+      .hero-content p { margin-left: auto; margin-right: auto; }
+      .btn-group { justify-content: center; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    }
+    @media (max-width: 550px) {
+      .container { padding: 0 1rem; }
+      .gallery-item img { height: 280px; }
+      .nav-links { gap: 1rem; }
+    }
+    .gold-sep { width: 50px; height: 2px; background: var(--gold); margin: 1rem 0; }
+    .text-center .gold-sep { margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">LAGOS<span>ATELIER</span></div>
+  <ul class="nav-links">
+    <li><a href="#home">HOME</a></li>
+    <li><a href="#senator">SENATOR & TRADITIONAL</a></li>
+    <li><a href="#contemporary">CONTEMPORARY</a></li>
+    <li><a href="#craft">CRAFTSMANSHIP</a></li>
+    <li><a href="#contact">ATELIER</a></li>
+  </ul>
+</nav>
+
+<main>
+  <!-- Hero Section with Men's Image -->
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="hero-badge">— BESPOKE TAILORING HOUSE —</span>
+        <h1>Senator Excellence,<br>Nigerian Legacy</h1>
+        <p>Master tailor for the modern gentleman. From regal senator sets to contemporary power suits — each piece sculpted with luxury fabrics and ancestral precision.</p>
+        <div class="btn-group">
+          <a href="#senator" class="btn-primary">EXPLORE SENATOR WEAR</a>
+          <a href="#contact" class="btn-outline">BOOK FITTING</a>
+        </div>
+        <div class="gold-sep"></div>
+        <p style="font-size: 0.85rem; color:#aa9f8c;">✧ Handcrafted in Lagos | Worldwide delivery ✧</p>
+      </div>
+      <div class="hero-visual">
+        <img src="c:\Users\olale\Downloads\afro1.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
+      </div>
+    </div>
+  </section>
+
+  <!-- Craftsmanship Highlights -->
+  <section id="craft" class="craft-section">
+    <div class="container">
+      <h2>Art of the Gentleman</h2>
+      <div class="craft-grid">
+        <div class="craft-card"><i class="fas fa-user-tie"></i><h3>Senator Mastery</h3><p>Our signature senator wears are hand-stitched with French cuffs, premium brocade, and intricate embroidery.</p></div>
+        <div class="craft-card"><i class="fas fa-cut"></i><h3>Bespoke Silhouette</h3><p>Precision tailoring for agbada, dashiki, and corporate suits — made to measure.</p></div>
+        <div class="craft-card"><i class="fas fa-gem"></i><h3>Luxury Fabrics</h3><p>Italian wool, aso-oke, cashmere, and handwoven textiles from West Africa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SENATOR & TRADITIONAL MEN'S ATTIRE (high-quality images) -->
+  <section id="senator" class="gallery-section">
+    <div class="container">
+      <div class="gallery-category">
+        <div class="category-header">
+          <h3>👑 SENATOR & HERITAGE COLLECTION</h3>
+          <p>Agbada · Senator Sets · Kaftan · Royal Dashiki</p>
+        </div>
+        <div class="gallery-grid">
+          <!-- Image 1: Senator wear - classic men's -->
+          <div class="gallery-item">
+            <img src="c:\Users\olale\Downloads\Navy Blue royal fila.jfif?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit with embroidery" loading="lazy">
+            <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, complete with fila cap</p></div>
+          </div>
+          <!-- Image 2: another senator style -->
+          <div class="gallery-item">
+            <img src="c:\Users\olale\Downloads\afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with intricate embroidery men" loading="lazy">
+            <div class="item-caption"><h4>Regal Agbada</h4><p>Premium lace-agbada, pearl buttons, modern senator fit</p></div>
+          </div>
+          <!-- Image 3: luxury native wedding -->
+          <div class="gallery-item">
+            <img src="c:\Users\olale\Downloads\afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in traditional aso-oke senator attire" loading="lazy">
+            <div class="item-caption"><h4>Afrocentric Senator</h4><p>Custom embroidered velvet senator, hand-finished lapels</p></div>
+          </div>
+          <!-- Additional senator to ensure variety -->
+          <div class="gallery-item">
+            <img src="c:\Users\olale\Downloads\afro4.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian gentleman in high-end kaftan senator" loading="lazy">
+            <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with subtle gold embroidery, perfect for weddings</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- TESTIMONIAL (men focused) -->
+  <div class="testimonial">
+    <div class="container">
+      <div class="quote">
+        “The finest senator wear and bespoke suits I've ever owned. Every detail, from the collar to the cuff, reflects luxury and heritage. Lagos Atelier is unrivaled.”
+      </div>
+      <div class="client-name" style="margin-top: 1rem; color: var(--gold);">— Mr. Adewale O., CEO & Style Connoisseur</div>
+    </div>
+  </div>
+
+  <!-- CONTACT & ATELIER -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2>Private consultation</h2>
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <h3>Schedule a fitting</h3>
+          <p>Whether a senator set, agbada, or contemporary business suit — we bring your vision to life.</p>
+          <div class="contact-detail"><i class="fas fa-map-marker-alt"></i> Victoria Island, Lagos (by appointment)</div>
+          <div class="contact-detail"><i class="fas fa-phone-alt"></i> +234 (0) 812 345 6789</div>
+          <div class="contact-detail"><i class="fas fa-envelope"></i> bespoke@lagosatelier.ng</div>
+          <div class="gold-sep"></div>
+          <p style="font-style: italic;">Worldwide shipping · Private trunk shows</p>
+        </div>
+        <div class="contact-form">
+          <input type="text" placeholder="Full name" id="name">
+          <input type="email" placeholder="Email address" id="email">
+          <textarea rows="4" placeholder="Tell us your vision (senator wear, agbada, suit, etc.)"></textarea>
+          <button id="sendInquiry">REQUEST CONSULTATION</button>
+          <p style="font-size: 0.7rem; margin-top: 0.6rem; color:#9c947d;">Our master tailor responds within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>© LAGOS ATELIER — Master Tailoring for Men · Senator, Agbada & Bespoke Suits | Nigerian Luxury since 2012</p>
+  <div style="margin-top: 0.6rem; letter-spacing: 3px;">
+    <i class="fab fa-instagram" style="margin:0 6px; color:#b99a4b;"></i>
+    <i class="fab fa-whatsapp" style="margin:0 6px; color:#b99a4b;"></i>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // smooth scroll for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === "#") return;
+        const targetElem = document.querySelector(targetId);
+        if (targetElem) {
+          e.preventDefault();
+          targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // contact form alert
+    const sendBtn = document.getElementById('sendInquiry');
+    if (sendBtn) {
+      sendBtn.addEventListener('click', function() {
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        if (!name || !email) {
+          alert("Please provide your name and email for a personalized atelier consultation.");
+        } else {
+          alert(`Thank you, ${name}. Your consultation request has been received. Our team will reach out to craft your perfect senator or contemporary attire.`);
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.querySelector('textarea').value = '';
+        }
+      });
+    }
+
+    // active nav highlight on scroll (lightweight)
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-links a");
+    function updateActiveNav() {
+      let current = "";
+      const scrollPos = window.scrollY + 150;
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+          current = section.getAttribute("id");
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        const href = link.getAttribute("href").substring(1);
+        if (href === current) link.classList.add("active");
+      });
+    }
+    window.addEventListener("scroll", updateActiveNav);
+    updateActiveNav();
+  })();
+</script>
+</body>
+</html>
