@@ -60,7 +60,7 @@
       align-items: center;
       padding: 1rem 1.5rem;
       background: rgba(5,5,5,0.95);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -90,7 +90,8 @@
       margin: 5px 0;
       transition: 0.3s;
     }
-    /* Navigation links */
+
+    /* Navigation links - desktop */
     .nav-links {
       display: flex;
       gap: 2rem;
@@ -115,7 +116,7 @@
         position: fixed;
         top: 0;
         left: -100%;
-        width: 70%;
+        width: 75%;
         height: 100vh;
         background: rgba(0,0,0,0.96);
         backdrop-filter: blur(12px);
@@ -128,9 +129,6 @@
       }
       .nav-links.active {
         left: 0;
-      }
-      .nav-links li {
-        margin: 0;
       }
       .navbar {
         padding: 0.8rem 1.2rem;
@@ -153,16 +151,18 @@
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       }
     }
+
     @media (max-width: 550px) {
       .container {
         padding: 0 1rem;
       }
       .gallery-item img {
-        height: 280px;
+        height: auto;
+        aspect-ratio: 4 / 3;
       }
     }
 
-    /* Hero */
+    /* Hero Section */
     .hero {
       min-height: 90vh;
       display: flex;
@@ -357,7 +357,7 @@
         <p style="font-size: 0.85rem; color:#aa9f8c;">✧ Handcrafted in Lagos | Worldwide delivery ✧</p>
       </div>
       <div class="hero-visual">
-        <img src="afro1.jpg" alt="Nigerian man in luxury senator agbada" loading="eager">
+        <img src="afro1.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
       </div>
     </div>
   </section>
@@ -384,19 +384,19 @@
         </div>
         <div class="gallery-grid">
           <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/3850712/man-in-traditional-african-attire-3850712.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit" loading="lazy">
+            <img src="Navy Blue royal fila.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit" loading="lazy">
             <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, fila cap</p></div>
           </div>
           <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/3928304/agbada-man-posing-3928304.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with embroidery" loading="lazy">
+            <img src="afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with embroidery" loading="lazy">
             <div class="item-caption"><h4>Regal Agbada</h4><p>Premium lace-agbada, pearl buttons, modern senator fit</p></div>
           </div>
           <div class="gallery-item">
-            <img src="Navy Blue royal fila.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in aso-oke senator attire" loading="lazy">
+            <img src="afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in aso-oke senator attire" loading="lazy">
             <div class="item-caption"><h4>Afrocentric Senator</h4><p>Custom embroidered velvet senator, hand-finished lapels</p></div>
           </div>
           <div class="gallery-item">
-            <img src="afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="High-end kaftan senator" loading="lazy">
+            <img src="afro4.jpg?auto=compress&cs=tinysrgb&w=800" alt="High-end kaftan senator" loading="lazy">
             <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with gold embroidery, perfect for weddings</p></div>
           </div>
         </div>
@@ -414,7 +414,7 @@
         </div>
         <div class="gallery-grid">
           <div class="gallery-item">
-            <img src="afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Tailored suit for men" loading="lazy">
+            <img src="https://images.pexels.com/photos/4380976/elegant-man-in-italian-suit-4380976.jpg?auto=compress&cs=tinysrgb&w=800" alt="Tailored suit for men" loading="lazy">
             <div class="item-caption"><h4>Savile Row Precision</h4><p>Charcoal wool suit, peak lapels, handmade in Lagos</p></div>
           </div>
           <div class="gallery-item">
@@ -498,10 +498,13 @@
         navLinks.classList.toggle('active');
       });
     }
-    // Close menu when a link is clicked (smooth scroll)
+
+    // Close menu and smooth scroll on link click
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', (e) => {
-        navLinks.classList.remove('active');
+        if (navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+        }
         const targetId = link.getAttribute('href');
         if (targetId && targetId !== '#') {
           e.preventDefault();
