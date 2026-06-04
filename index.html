@@ -53,14 +53,14 @@
       padding: 0 1.5rem;
     }
 
-    /* ========== HAMBURGER NAVIGATION ========== */
+    /* ========== HAMBURGER NAVIGATION (added) ========== */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 1.5rem;
-      background: rgba(5,5,5,0.95);
-      backdrop-filter: blur(12px);
+      background: rgba(5,5,5,0.92);
+      backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -94,7 +94,7 @@
     /* Navigation links - desktop */
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem;
       list-style: none;
       transition: all 0.3s ease;
     }
@@ -107,7 +107,7 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--gold); }
 
-    /* Mobile styles */
+    /* Mobile styles - added hamburger behavior */
     @media (max-width: 850px) {
       .hamburger {
         display: flex;
@@ -129,9 +129,6 @@
       }
       .nav-links.active {
         left: 0;
-      }
-      .navbar {
-        padding: 0.8rem 1.2rem;
       }
       .hero-grid {
         flex-direction: column;
@@ -157,12 +154,11 @@
         padding: 0 1rem;
       }
       .gallery-item img {
-        height: auto;
-        aspect-ratio: 4 / 3;
+        height: 280px;
       }
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
       min-height: 90vh;
       display: flex;
@@ -226,7 +222,6 @@
       box-shadow: var(--shadow-elegant);
       border: 1px solid rgba(198,164,63,0.4);
       object-fit: cover;
-      aspect-ratio: 4 / 3;
     }
 
     /* Craftsmanship */
@@ -275,8 +270,7 @@
     }
     .gallery-item img {
       width: 100%;
-      height: auto;
-      aspect-ratio: 4 / 3;
+      height: 360px;
       object-fit: cover;
       display: block;
       transition: transform 0.4s ease;
@@ -342,7 +336,7 @@
 </nav>
 
 <main>
-  <!-- Hero Section -->
+  <!-- Hero Section with Men's Image -->
   <section id="home" class="hero">
     <div class="container hero-grid">
       <div class="hero-content">
@@ -357,7 +351,7 @@
         <p style="font-size: 0.85rem; color:#aa9f8c;">✧ Handcrafted in Lagos | Worldwide delivery ✧</p>
       </div>
       <div class="hero-visual">
-        <img src="afro1.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
+        <img src="c:\Users\olale\Downloads\afro1.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
       </div>
     </div>
   </section>
@@ -374,7 +368,7 @@
     </div>
   </section>
 
-  <!-- SENATOR & TRADITIONAL MEN'S ATTIRE -->
+  <!-- SENATOR & TRADITIONAL MEN'S ATTIRE (high-quality images) -->
   <section id="senator" class="gallery-section">
     <div class="container">
       <div class="gallery-category">
@@ -383,68 +377,34 @@
           <p>Agbada · Senator Sets · Kaftan · Royal Dashiki</p>
         </div>
         <div class="gallery-grid">
+          <!-- Image 1: Senator wear - classic men's -->
           <div class="gallery-item">
-            <img src="Navy Blue royal fila.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit" loading="lazy">
-            <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, fila cap</p></div>
+            <img src="c:\Users\olale\Downloads\Navy Blue royal fila.jfif?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit with embroidery" loading="lazy">
+            <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, complete with fila cap</p></div>
           </div>
+          <!-- Image 2: another senator style -->
           <div class="gallery-item">
-            <img src="afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with embroidery" loading="lazy">
+            <img src="c:\Users\olale\Downloads\afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with intricate embroidery men" loading="lazy">
             <div class="item-caption"><h4>Regal Agbada</h4><p>Premium lace-agbada, pearl buttons, modern senator fit</p></div>
           </div>
+          <!-- Image 3: luxury native wedding -->
           <div class="gallery-item">
-            <img src="afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in aso-oke senator attire" loading="lazy">
+            <img src="c:\Users\olale\Downloads\afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in traditional aso-oke senator attire" loading="lazy">
             <div class="item-caption"><h4>Afrocentric Senator</h4><p>Custom embroidered velvet senator, hand-finished lapels</p></div>
           </div>
+          <!-- Additional senator to ensure variety -->
           <div class="gallery-item">
-            <img src="afro4.jpg?auto=compress&cs=tinysrgb&w=800" alt="High-end kaftan senator" loading="lazy">
-            <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with gold embroidery, perfect for weddings</p></div>
+            <img src="c:\Users\olale\Downloads\afro4.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian gentleman in high-end kaftan senator" loading="lazy">
+            <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with subtle gold embroidery, perfect for weddings</p></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTEMPORARY MEN'S ATTIRE (restored) -->
-  <section id="contemporary" class="gallery-section" style="background:#0b0b0b;">
-    <div class="container">
-      <div class="gallery-category">
-        <div class="category-header">
-          <h3>✦ MODERN MASTERS — CONTEMPORARY MEN'S WEAR</h3>
-          <p>Bespoke Suits · Tuxedos · Afro-fusion blazers</p>
-        </div>
-        <div class="gallery-grid">
-          <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/4380976/elegant-man-in-italian-suit-4380976.jpg?auto=compress&cs=tinysrgb&w=800" alt="Tailored suit for men" loading="lazy">
-            <div class="item-caption"><h4>Savile Row Precision</h4><p>Charcoal wool suit, peak lapels, handmade in Lagos</p></div>
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/1043474/man-in-black-suit-1043474.jpg?auto=compress&cs=tinysrgb&w=800" alt="Executive black suit" loading="lazy">
-            <div class="item-caption"><h4>Lagos Executive</h4><p>Midnight black tuxedo, satin trim, personalized monogram</p></div>
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/3952222/nigerian-bride-and-groom-in-traditional-attire-3952222.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian groom in modern fusion" loading="lazy">
-            <div class="item-caption"><h4>Afro-Contemporary Groom</h4><p>Agbada meets Italian tailoring — bespoke wedding statement</p></div>
-          </div>
-        </div>
-        <div class="gallery-grid" style="margin-top: 1.8rem;">
-          <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/3240300/man-in-white-suit-3240300.jpg?auto=compress&cs=tinysrgb&w=800" alt="Cream luxury suit" loading="lazy">
-            <div class="item-caption"><h4>Summer Linen Suit</h4><p>Lightweight, breathable, custom-made for destination events</p></div>
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/2665123/man-wearing-black-suit-2665123.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian style blazer" loading="lazy">
-            <div class="item-caption"><h4>Afro-Tailored Blazer</h4><p>Wool-cashmere blend with subtle aso-oke pocket square</p></div>
-          </div>
-          <div class="gallery-item">
-            <img src="https://images.pexels.com/photos/5490104/black-man-in-formal-wear-5490104.jpg?auto=compress&cs=tinysrgb&w=800" alt="Modern senator fusion" loading="lazy">
-            <div class="item-caption"><h4>Senator Tuxedo</h4><p>Innovative silhouette: senator collar meets classic tuxedo</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
-  <!-- TESTIMONIAL -->
+  <!-- TESTIMONIAL (men focused) -->
   <div class="testimonial">
     <div class="container">
       <div class="quote">
@@ -499,7 +459,7 @@
       });
     }
 
-    // Close menu and smooth scroll on link click
+    // Close menu when a link is clicked, and smooth scroll
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', (e) => {
         if (navLinks.classList.contains('active')) {
