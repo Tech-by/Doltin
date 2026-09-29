@@ -1,520 +1,1453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
-  <title>LAGOS ATELIER | Men's Bespoke Tailor – Nigerian Senator & Luxury Attire</title>
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>Quest Board — Tasks &amp; Rewards</title>
+<style>
+  :root{
+    --bg:#f6f3ec;
+    --surface:#ffffff;
+    --surface-2:#fbf9f4;
+    --ink:#1d2b25;
+    --ink-soft:#5c6b63;
+    --ink-faint:#8f9c94;
+    --line:#e3ddd1;
+    --line-strong:#cfc7b7;
+    --green:#1f7a5a;
+    --green-soft:#e3f2ec;
+    --amber:#b8722a;
+    --amber-soft:#fbecdb;
+    --red:#b8443a;
+    --radius:10px;
+    --radius-lg:16px;
+    --shadow-sm:0 1px 2px rgba(29,43,37,.06);
+    --shadow-md:0 4px 14px rgba(29,43,37,.07);
+    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
 
-    body {
-      background-color: #0A0A0A;
-      color: #E8E6E1;
-      font-family: 'Inter', sans-serif;
-      scroll-behavior: smooth;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
+  /* warm alternate accents unlocked by rewards */
+  body[data-theme="teal"]{ --green:#0f7b8a; --green-soft:#e0f2f4; }
+  body[data-theme="plum"]{ --green:#7a3d6b; --green-soft:#f5e6f1; }
 
-    :root {
-      --gold: #C6A43F;
-      --gold-light: #DDBF6E;
-      --gold-dark: #A17F2E;
-      --charcoal: #111111;
-      --deep-black: #050505;
-      --cream: #F9F6F0;
-      --shadow-elegant: 0 25px 40px -20px rgba(0,0,0,0.6);
-    }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
 
-    h1, h2, h3, .serif {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-    }
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
 
-    h2 {
-      font-size: clamp(2rem, 5vw, 2.8rem);
-      font-weight: 600;
-      border-left: 4px solid var(--gold);
-      padding-left: 1rem;
-      margin-bottom: 2rem;
-    }
+  /* ======================= LAYOUT ======================= */
+  .shell{
+    display:grid;
+    grid-template-columns:264px 1fr;
+    min-height:100vh;
+  }
 
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
+  /* ======================= SIDEBAR ======================= */
+  .side{
+    background:var(--surface);
+    border-right:1px solid var(--line);
+    padding:26px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
 
-    /* ========== HAMBURGER NAVIGATION (added) ========== */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      background: rgba(5,5,5,0.92);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(198,164,63,0.3);
-    }
-    .logo {
-      font-size: 1.7rem;
-      font-weight: 600;
-      font-family: 'Cormorant Garamond', serif;
-      letter-spacing: 1px;
-      color: var(--cream);
-      z-index: 1001;
-    }
-    .logo span { color: var(--gold); }
+  .mark{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .mark-glyph{
+    width:38px; height:38px;
+    border-radius:10px;
+    background:var(--green);
+    color:#fff;
+    display:grid; place-items:center;
+    font-size:19px;
+    font-weight:700;
+    flex:0 0 auto;
+  }
+  .mark-text h1{
+    margin:0;
+    font-size:.98rem;
+    letter-spacing:-.01em;
+    font-weight:700;
+  }
+  .mark-text p{
+    margin:0;
+    font-size:.72rem;
+    color:var(--ink-faint);
+    letter-spacing:.02em;
+    text-transform:uppercase;
+  }
 
-    /* Hamburger icon */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      z-index: 1001;
-    }
-    .hamburger span {
-      width: 28px;
-      height: 2px;
-      background: var(--gold);
-      margin: 5px 0;
-      transition: 0.3s;
-    }
+  /* balance block */
+  .balance{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:16px;
+  }
+  .balance .big{
+    font-size:2rem;
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    line-height:1.1;
+    letter-spacing:-.02em;
+  }
+  .balance .big small{
+    font-size:.7rem;
+    font-weight:600;
+    color:var(--ink-faint);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    margin-left:4px;
+  }
+  .balance .sub{
+    margin-top:2px;
+    font-size:.76rem;
+    color:var(--ink-soft);
+  }
 
-    /* Navigation links - desktop */
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-      transition: all 0.3s ease;
-    }
-    .nav-links a {
-      text-decoration: none;
-      color: #E8E6E1;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: 0.2s;
-    }
-    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  /* level meter */
+  .meter{ margin-top:14px; }
+  .meter-track{
+    height:6px;
+    background:#e9e3d7;
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .meter-fill{
+    height:100%;
+    width:0;
+    background:var(--green);
+    border-radius:99px;
+    transition:width .35s ease;
+  }
+  .meter-label{
+    display:flex;
+    justify-content:space-between;
+    margin-top:6px;
+    font-size:.7rem;
+    color:var(--ink-faint);
+    font-variant-numeric:tabular-nums;
+  }
 
-    /* Mobile styles - added hamburger behavior */
-    @media (max-width: 850px) {
-      .hamburger {
-        display: flex;
-      }
-      .nav-links {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 75%;
-        height: 100vh;
-        background: rgba(0,0,0,0.96);
-        backdrop-filter: blur(12px);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        transition: left 0.3s ease-in-out;
-        z-index: 1000;
-      }
-      .nav-links.active {
-        left: 0;
-      }
-      .hero-grid {
-        flex-direction: column;
-        text-align: center;
-      }
-      .hero-content p {
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .btn-group {
-        justify-content: center;
-      }
-      .contact-wrapper {
-        grid-template-columns: 1fr;
-      }
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      }
-    }
+  /* nav */
+  .nav{ display:flex; flex-direction:column; gap:3px; }
+  .nav-btn{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    text-align:left;
+    background:none;
+    border:0;
+    border-radius:var(--radius);
+    padding:10px 12px;
+    font-family:inherit;
+    font-size:.87rem;
+    font-weight:600;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:background .16s, color .16s;
+  }
+  .nav-btn:hover{ background:var(--surface-2); color:var(--ink); }
+  .nav-btn[aria-current="true"]{
+    background:var(--green-soft);
+    color:var(--green);
+  }
+  .nav-btn .count{
+    font-size:.7rem;
+    font-weight:700;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--ink-faint);
+    border-radius:99px;
+    padding:1px 8px;
+    font-variant-numeric:tabular-nums;
+  }
+  .nav-btn[aria-current="true"] .count{
+    background:#fff;
+    border-color:transparent;
+    color:var(--green);
+  }
 
-    @media (max-width: 550px) {
-      .container {
-        padding: 0 1rem;
-      }
-      .gallery-item img {
-        height: 280px;
-      }
-    }
+  .side-foot{
+    margin-top:auto;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .side-note{
+    font-size:.7rem;
+    color:var(--ink-faint);
+    line-height:1.5;
+    margin:0;
+  }
 
-    /* Hero */
-    .hero {
-      min-height: 90vh;
-      display: flex;
-      align-items: center;
-      padding: 3rem 0;
-      background: radial-gradient(circle at 70% 20%, #13100A 0%, #030303 100%);
-    }
-    .hero-grid {
-      display: flex;
-      flex-direction: row;
-      gap: 2rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .hero-content { flex: 1; min-width: 260px; }
-    .hero-badge {
-      color: var(--gold);
-      font-weight: 500;
-      letter-spacing: 2px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-    }
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.8rem);
-      line-height: 1.1;
-      margin: 1rem 0;
-      background: linear-gradient(135deg, #FFFFFF 30%, #DDBF6E 80%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .hero p { color: #ccc9c2; margin-bottom: 1.8rem; max-width: 500px; }
-    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary, .btn-outline {
-      padding: 0.9rem 1.8rem;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: 0.2s;
-      border-radius: 0;
-      text-decoration: none;
-      display: inline-block;
-      text-align: center;
-    }
-    .btn-primary {
-      background: var(--gold);
-      color: #0A0A0A;
-      border: none;
-    }
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
-    .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--gold);
-      color: var(--gold);
-    }
-    .hero-visual { flex: 0.9; min-width: 260px; text-align: center; }
-    .hero-visual img {
-      width: 100%;
-      max-width: 480px;
-      border-radius: 12px;
-      box-shadow: var(--shadow-elegant);
-      border: 1px solid rgba(198,164,63,0.4);
-      object-fit: cover;
-    }
+  /* ======================= MAIN ======================= */
+  .main{
+    padding:30px 34px 70px;
+    max-width:1000px;
+  }
 
-    /* Craftsmanship */
-    .craft-section { padding: 4rem 0; background: #0C0C0C; }
-    .craft-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.8rem;
-    }
-    .craft-card {
-      background: #121212;
-      padding: 2rem 1.2rem;
-      text-align: center;
-      transition: 0.2s;
-      border-bottom: 2px solid transparent;
-    }
-    .craft-card i { font-size: 2.2rem; color: var(--gold); margin-bottom: 1rem; }
-    .craft-card h3 { font-size: 1.5rem; margin-bottom: 0.8rem; }
-    .craft-card:hover { border-bottom-color: var(--gold); background: #181818; transform: translateY(-4px); }
+  .page-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--line);
+  }
+  .page-head h2{
+    margin:0 0 3px;
+    font-size:1.35rem;
+    letter-spacing:-.02em;
+    font-weight:700;
+  }
+  .page-head p{
+    margin:0;
+    font-size:.83rem;
+    color:var(--ink-soft);
+    max-width:62ch;
+  }
 
-    /* Gallery Sections */
-    .gallery-section { padding: 4rem 0; background: #050505; }
-    .gallery-category { margin-bottom: 3rem; }
-    .category-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      margin-bottom: 1.8rem;
-      border-bottom: 1px solid #2a241c;
-      padding-bottom: 0.5rem;
-    }
-    .category-header h3 { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 500; color: var(--cream); }
-    .category-header p { color: var(--gold); font-size: 0.8rem; letter-spacing: 1px; }
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
-    }
-    .gallery-item {
-      background: #111;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: 0.2s ease;
-      border: 1px solid #26221a;
-    }
-    .gallery-item img {
-      width: 100%;
-      height: 360px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.4s ease;
-    }
-    .gallery-item:hover img { transform: scale(1.02); }
-    .item-caption { padding: 1rem; background: #0f0f0f; }
-    .item-caption h4 { font-size: 1.25rem; color: var(--gold); font-family: 'Cormorant Garamond', serif; }
-    .item-caption p { font-size: 0.8rem; color: #bcb5a6; }
+  /* ======================= TASK ROWS ======================= */
+  .rows{ display:flex; flex-direction:column; gap:10px; }
 
-    /* Testimonial */
-    .testimonial { background: #11100e; padding: 4rem 0; text-align: center; }
-    .quote { font-size: clamp(1.2rem, 4vw, 1.6rem); font-family: 'Cormorant Garamond', serif; font-style: italic; max-width: 800px; margin: 0 auto; color: #e3dac9; }
+  .row-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);
+    padding:16px 18px;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    transition:border-color .18s, box-shadow .18s;
+  }
+  .row-card:hover{ border-color:var(--line-strong); box-shadow:var(--shadow-md); }
+  .row-card.is-done{ background:var(--surface-2); opacity:.78; }
+  .row-card.is-open{ border-color:var(--green); }
 
-    /* Contact */
-    .contact-section { padding: 4rem 0; background: #0A0A0A; }
-    .contact-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-    .contact-info h3 { font-size: 1.8rem; margin-bottom: 0.8rem; }
-    .contact-detail { display: flex; gap: 1rem; align-items: center; margin: 1rem 0; }
-    .contact-detail i { color: var(--gold); width: 28px; }
-    .contact-form input, .contact-form textarea {
-      width: 100%;
-      background: #181818;
-      border: 1px solid #2c2a26;
-      padding: 0.9rem;
-      margin-bottom: 1rem;
-      color: white;
-    }
-    .contact-form button {
-      width: 100%;
-      background: var(--gold);
-      color: black;
-      font-weight: bold;
-      border: none;
-      padding: 0.9rem;
-      cursor: pointer;
-    }
-    .footer { text-align: center; padding: 2rem; border-top: 1px solid #1e1c18; font-size: 0.75rem; }
+  /* left rail: status circle + points */
+  .row-rail{
+    flex:0 0 auto;
+    width:56px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    padding-top:2px;
+  }
+  .tick{
+    width:26px; height:26px;
+    border-radius:50%;
+    border:2px solid var(--line-strong);
+    display:grid; place-items:center;
+    font-size:13px;
+    color:transparent;
+    background:#fff;
+    transition:all .2s;
+  }
+  .row-card.is-done .tick{
+    background:var(--green);
+    border-color:var(--green);
+    color:#fff;
+  }
+  .pts{
+    font-family:var(--mono);
+    font-size:.74rem;
+    font-weight:700;
+    color:var(--green);
+    background:var(--green-soft);
+    border-radius:6px;
+    padding:2px 7px;
+    white-space:nowrap;
+  }
 
-    .gold-sep { width: 50px; height: 2px; background: var(--gold); margin: 1rem 0; }
-    .text-center .gold-sep { margin-left: auto; margin-right: auto; }
-  </style>
+  /* body */
+  .row-body{ flex:1; min-width:0; }
+  .row-title{
+    margin:0 0 3px;
+    font-size:.97rem;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+  .row-desc{
+    margin:0;
+    font-size:.83rem;
+    color:var(--ink-soft);
+  }
+  .row-controls{ margin-top:12px; }
+
+  .tag{
+    display:inline-block;
+    font-size:.66rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    border-radius:5px;
+    padding:2px 7px;
+    margin-left:8px;
+    vertical-align:2px;
+  }
+  .tag.link{ background:var(--green-soft); color:var(--green); }
+  .tag.done{ background:#e9e3d7; color:var(--ink-faint); }
+
+  /* ======================= CONTROLS ======================= */
+  .ctl{ display:flex; flex-direction:column; gap:10px; }
+  .ctl-row{ display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+
+  .btn{
+    font-family:inherit;
+    font-size:.83rem;
+    font-weight:600;
+    border-radius:9px;
+    padding:8px 15px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:background .16s, border-color .16s, color .16s, opacity .16s;
+    white-space:nowrap;
+  }
+  .btn.solid{ background:var(--green); color:#fff; }
+  .btn.solid:hover:not(:disabled){ filter:brightness(1.08); }
+  .btn.line{
+    background:#fff;
+    border-color:var(--line-strong);
+    color:var(--ink);
+  }
+  .btn.line:hover:not(:disabled){ border-color:var(--green); color:var(--green); }
+  .btn.plain{
+    background:none;
+    color:var(--ink-soft);
+    padding:8px 10px;
+  }
+  .btn.plain:hover:not(:disabled){ color:var(--red); }
+  .btn:disabled{ opacity:.42; cursor:not-allowed; }
+  .btn.tiny{ padding:6px 11px; font-size:.76rem; }
+
+  .field, .area{
+    width:100%;
+    background:#fff;
+    border:1px solid var(--line-strong);
+    border-radius:9px;
+    padding:9px 12px;
+    color:var(--ink);
+    font-family:inherit;
+    font-size:.85rem;
+    resize:vertical;
+  }
+  .field::placeholder, .area::placeholder{ color:var(--ink-faint); }
+  .field:focus, .area:focus{
+    outline:none;
+    border-color:var(--green);
+    box-shadow:0 0 0 3px var(--green-soft);
+  }
+
+  /* inline timer */
+  .inline-timer{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex:1;
+    min-width:220px;
+  }
+  .inline-timer[hidden]{ display:none; }
+  .bar{
+    flex:1;
+    height:7px;
+    background:#e9e3d7;
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .bar > i{
+    display:block;
+    height:100%;
+    width:0;
+    background:var(--green);
+    border-radius:99px;
+    transition:width .25s linear;
+  }
+  .clock{
+    font-family:var(--mono);
+    font-size:.84rem;
+    font-weight:700;
+    color:var(--green);
+    min-width:52px;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  .inline-timer.held .clock{ color:var(--amber); }
+  .inline-timer.held .bar > i{ background:var(--amber); }
+
+  /* messages */
+  .msg{ margin:0; font-size:.77rem; }
+  .msg.note{ color:var(--ink-faint); }
+  .msg.good{ color:var(--green); font-weight:600; }
+  .msg.bad{ color:var(--red); font-weight:600; }
+  .msg.warn{ color:var(--amber); font-weight:600; }
+
+  /* ======================= REWARD ROWS ======================= */
+  .reward-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-sm);
+    padding:16px 18px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    transition:border-color .18s, box-shadow .18s;
+  }
+  .reward-card:hover{ border-color:var(--line-strong); box-shadow:var(--shadow-md); }
+  .reward-card.is-owned{ border-color:var(--green); background:var(--green-soft); }
+  .reward-card.is-locked{ opacity:.72; }
+
+  .reward-icon{
+    width:44px; height:44px;
+    flex:0 0 auto;
+    border-radius:11px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    display:grid; place-items:center;
+    font-size:20px;
+  }
+  .reward-card.is-owned .reward-icon{
+    background:#fff;
+    border-color:var(--green);
+  }
+  .reward-info{ flex:1; min-width:0; }
+  .reward-info h3{
+    margin:0 0 2px;
+    font-size:.95rem;
+    font-weight:700;
+  }
+  .reward-info p{
+    margin:0;
+    font-size:.82rem;
+    color:var(--ink-soft);
+  }
+  .reward-cost{
+    font-family:var(--mono);
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--amber);
+    background:var(--amber-soft);
+    border-radius:6px;
+    padding:3px 9px;
+    white-space:nowrap;
+  }
+  .reward-card.is-owned .reward-cost{
+    color:var(--green);
+    background:#fff;
+  }
+
+  /* ======================= HISTORY ======================= */
+  .log{ display:flex; flex-direction:column; gap:0; }
+  .log-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 4px;
+    border-bottom:1px solid var(--line);
+    font-size:.84rem;
+  }
+  .log-item:last-child{ border-bottom:0; }
+  .log-mark{
+    width:26px; height:26px;
+    flex:0 0 auto;
+    border-radius:7px;
+    display:grid; place-items:center;
+    font-size:13px;
+    font-weight:700;
+  }
+  .log-mark.in{ background:var(--green-soft); color:var(--green); }
+  .log-mark.out{ background:var(--amber-soft); color:var(--amber); }
+  .log-name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .log-amt{
+    font-family:var(--mono);
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+  }
+  .log-amt.in{ color:var(--green); }
+  .log-amt.out{ color:var(--amber); }
+  .log-when{
+    font-size:.72rem;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+  .blank{
+    padding:34px 4px;
+    text-align:center;
+    color:var(--ink-faint);
+    font-size:.85rem;
+  }
+
+  /* ======================= BREAK STRIP ======================= */
+  .strip{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    background:var(--green-soft);
+    border:1px solid var(--green);
+    border-radius:var(--radius-lg);
+    padding:12px 18px;
+    margin-bottom:18px;
+    font-size:.85rem;
+  }
+  .strip[hidden]{ display:none; }
+  .strip strong{ font-family:var(--mono); }
+
+  /* ======================= TOASTS ======================= */
+  .toaster{
+    position:fixed;
+    left:50%;
+    bottom:22px;
+    transform:translateX(-50%);
+    z-index:80;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:center;
+    pointer-events:none;
+    width:max-content;
+    max-width:calc(100vw - 32px);
+  }
+  .toast{
+    background:var(--ink);
+    color:#f6f3ec;
+    font-size:.82rem;
+    font-weight:600;
+    padding:10px 16px;
+    border-radius:99px;
+    box-shadow:0 6px 20px rgba(29,43,37,.22);
+    animation:pop .22s ease;
+    text-align:center;
+  }
+  .toast.good{ background:var(--green); color:#fff; }
+  .toast.warn{ background:var(--amber); color:#fff; }
+  .toast.gone{ opacity:0; transform:translateY(8px); transition:opacity .3s, transform .3s; }
+
+  @keyframes pop{
+    from{ opacity:0; transform:translateY(10px) scale(.96); }
+    to{ opacity:1; transform:none; }
+  }
+  @keyframes wobble{
+    10%,90%{ transform:translateX(-2px); }
+    20%,80%{ transform:translateX(3px); }
+    30%,50%,70%{ transform:translateX(-5px); }
+    40%,60%{ transform:translateX(5px); }
+  }
+  .wobble{ animation:wobble .4s; }
+
+  /* ======================= MOBILE ======================= */
+  @media (max-width:820px){
+    .shell{ grid-template-columns:1fr; }
+    .side{
+      position:static;
+      height:auto;
+      border-right:0;
+      border-bottom:1px solid var(--line);
+      padding:18px 16px;
+      gap:18px;
+    }
+    .nav{ flex-direction:row; overflow-x:auto; }
+    .nav-btn{ width:auto; white-space:nowrap; }
+    .side-foot{ flex-direction:row; align-items:center; justify-content:space-between; }
+    .side-note{ display:none; }
+    .main{ padding:22px 16px 60px; }
+    .row-card{ flex-direction:column; gap:10px; }
+    .row-rail{
+      flex-direction:row;
+      width:auto;
+      align-items:center;
+      gap:10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+  }
+</style>
 </head>
-<body>
+<body data-theme="default">
 
-<nav class="navbar">
-  <div class="logo">LAGOS<span>ATELIER</span></div>
-  <div class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#home">HOME</a></li>
-    <li><a href="#senator">SENATOR & TRADITIONAL</a></li>
-    <li><a href="#contemporary">CONTEMPORARY</a></li>
-    <li><a href="#craft">CRAFTSMANSHIP</a></li>
-    <li><a href="#contact">ATELIER</a></li>
-  </ul>
-</nav>
+<div class="shell">
 
-<main>
-  <!-- Hero Section with Men's Image -->
-  <section id="home" class="hero">
-    <div class="container hero-grid">
-      <div class="hero-content">
-        <span class="hero-badge">— BESPOKE TAILORING HOUSE —</span>
-        <h1>Senator Excellence,<br>Nigerian Legacy</h1>
-        <p>Master tailor for the modern gentleman. From regal senator sets to contemporary power suits — each piece sculpted with luxury fabrics and ancestral precision.</p>
-        <div class="btn-group">
-          <a href="#senator" class="btn-primary">EXPLORE SENATOR WEAR</a>
-          <a href="#contact" class="btn-outline">BOOK FITTING</a>
-        </div>
-        <div class="gold-sep"></div>
-        <p style="font-size: 0.85rem; color:#aa9f8c;">✧ Handcrafted in Lagos | Worldwide delivery ✧</p>
-      </div>
-      <div class="hero-visual">
-        <img src="afro1.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in luxury senator agbada" loading="eager">
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="side">
+
+    <div class="mark">
+      <div class="mark-glyph" aria-hidden="true">Q</div>
+      <div class="mark-text">
+        <h1>Quest Board</h1>
+        <p>Earn · Redeem</p>
       </div>
     </div>
-  </section>
 
-  <!-- Craftsmanship Highlights -->
-  <section id="craft" class="craft-section">
-    <div class="container">
-      <h2>Art of the Gentleman</h2>
-      <div class="craft-grid">
-        <div class="craft-card"><i class="fas fa-user-tie"></i><h3>Senator Mastery</h3><p>Our signature senator wears are hand-stitched with French cuffs, premium brocade, and intricate embroidery.</p></div>
-        <div class="craft-card"><i class="fas fa-cut"></i><h3>Bespoke Silhouette</h3><p>Precision tailoring for agbada, dashiki, and corporate suits — made to measure.</p></div>
-        <div class="craft-card"><i class="fas fa-gem"></i><h3>Luxury Fabrics</h3><p>Italian wool, aso-oke, cashmere, and handwoven textiles from West Africa.</p></div>
-      </div>
-    </div>
-  </section>
+    <div class="balance">
+      <div class="big"><span id="points">0</span><small>pts</small></div>
+      <div class="sub">Level <span id="level">1</span><span id="badge" hidden> ★</span> · <span id="spent-total">0</span> spent</div>
 
-  <!-- SENATOR & TRADITIONAL MEN'S ATTIRE (high-quality images) -->
-  <section id="senator" class="gallery-section">
-    <div class="container">
-      <div class="gallery-category">
-        <div class="category-header">
-          <h3>👑 SENATOR & HERITAGE COLLECTION</h3>
-          <p>Agbada · Senator Sets · Kaftan · Royal Dashiki</p>
+      <div class="meter">
+        <div class="meter-track">
+          <div class="meter-fill" id="meter-fill"></div>
         </div>
-        <div class="gallery-grid">
-          <!-- Image 1: Senator wear - classic men's -->
-          <div class="gallery-item">
-            <img src="Navy Blue royal fila.jfif?auto=compress&cs=tinysrgb&w=800" alt="Nigerian man in elegant senator outfit with embroidery" loading="lazy">
-            <div class="item-caption"><h4>Oba Senator Set</h4><p>Navy blue brocade with handcrafted gold motifs, complete with fila cap</p></div>
-          </div>
-          <!-- Image 2: another senator style -->
-          <div class="gallery-item">
-            <img src="afro2.jpg?auto=compress&cs=tinysrgb&w=800" alt="Royal agbada with intricate embroidery men" loading="lazy">
-            <div class="item-caption"><h4>Regal Agbada</h4><p>Premium lace-agbada, pearl buttons, modern senator fit</p></div>
-          </div>
-          <!-- Image 3: luxury native wedding -->
-          <div class="gallery-item">
-            <img src="afro3.jpg?auto=compress&cs=tinysrgb&w=800" alt="Man in traditional aso-oke senator attire" loading="lazy">
-            <div class="item-caption"><h4>Afrocentric Senator</h4><p>Custom embroidered velvet senator, hand-finished lapels</p></div>
-          </div>
-          <!-- Additional senator to ensure variety -->
-          <div class="gallery-item">
-            <img src="afro4.jpg?auto=compress&cs=tinysrgb&w=800" alt="Nigerian gentleman in high-end kaftan senator" loading="lazy">
-            <div class="item-caption"><h4>Premium Kaftan</h4><p>Silk-blend kaftan with subtle gold embroidery, perfect for weddings</p></div>
-          </div>
+        <div class="meter-label">
+          <span id="meter-left">100 to next</span>
+          <span id="meter-pct">0%</span>
         </div>
       </div>
     </div>
-  </section>
 
-  
+    <nav class="nav" aria-label="Sections">
+      <button class="nav-btn" data-view="board" aria-current="true" type="button">
+        <span>Quest board</span>
+        <span class="count" id="nav-board">0</span>
+      </button>
+      <button class="nav-btn" data-view="shop" aria-current="false" type="button">
+        <span>Rewards</span>
+        <span class="count" id="nav-shop">0</span>
+      </button>
+      <button class="nav-btn" data-view="log" aria-current="false" type="button">
+        <span>History</span>
+        <span class="count" id="nav-log">0</span>
+      </button>
+    </nav>
 
-  <!-- TESTIMONIAL (men focused) -->
-  <div class="testimonial">
-    <div class="container">
-      <div class="quote">
-        “The finest senator wear and bespoke suits I've ever owned. Every detail, from the collar to the cuff, reflects luxury and heritage. Lagos Atelier is unrivaled.”
-      </div>
-      <div class="client-name" style="margin-top: 1rem; color: var(--gold);">— Mr. Adewale O., CEO & Style Connoisseur</div>
+    <div class="side-foot">
+      <button id="wipe" class="btn line tiny" type="button">Reset progress</button>
+      <p class="side-note">
+        Saved in this browser only. External quests open a link you supply — points are
+        credited here once the visit is verified.
+      </p>
     </div>
-  </div>
+  </aside>
 
-  <!-- CONTACT & ATELIER -->
-  <section id="contact" class="contact-section">
-    <div class="container">
-      <h2>Private consultation</h2>
-      <div class="contact-wrapper">
-        <div class="contact-info">
-          <h3>Schedule a fitting</h3>
-          <p>Whether a senator set, agbada, or contemporary business suit — we bring your vision to life.</p>
-          <div class="contact-detail"><i class="fas fa-map-marker-alt"></i> Victoria Island, Lagos (by appointment)</div>
-          <div class="contact-detail"><i class="fas fa-phone-alt"></i> +234 (0) 812 345 6789</div>
-          <div class="contact-detail"><i class="fas fa-envelope"></i> bespoke@lagosatelier.ng</div>
-          <div class="gold-sep"></div>
-          <p style="font-style: italic;">Worldwide shipping · Private trunk shows</p>
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+    <div id="break-strip" class="strip" hidden>
+      <span>Break running — <strong id="break-clock">15:00</strong> remaining. You spent points for this.</span>
+      <button id="break-stop" class="btn line tiny" type="button">End break</button>
+    </div>
+
+    <!-- BOARD -->
+    <section id="view-board">
+      <div class="page-head">
+        <div>
+          <h2>Quest board</h2>
+          <p>
+            Each quest is verified before points are credited — a timer that really ran,
+            an answer that was really correct, or a link you really visited.
+          </p>
         </div>
-        <div class="contact-form">
-          <input type="text" placeholder="Full name" id="name">
-          <input type="email" placeholder="Email address" id="email">
-          <textarea rows="4" placeholder="Tell us your vision (senator wear, agbada, suit, etc.)"></textarea>
-          <button id="sendInquiry">REQUEST CONSULTATION</button>
-          <p style="font-size: 0.7rem; margin-top: 0.6rem; color:#9c947d;">Our master tailor responds within 24 hours.</p>
+        <span class="msg note" id="board-progress"></span>
+      </div>
+      <div id="board-list" class="rows"></div>
+    </section>
+
+    <!-- SHOP -->
+    <section id="view-shop" hidden>
+      <div class="page-head">
+        <div>
+          <h2>Rewards</h2>
+          <p>Spend points you actually earned. Unlocks apply immediately and stay.</p>
         </div>
       </div>
-    </div>
-  </section>
-</main>
+      <div id="shop-list" class="rows"></div>
+    </section>
 
-<footer class="footer">
-  <p>© LAGOS ATELIER — Master Tailoring for Men · Senator, Agbada & Bespoke Suits | Nigerian Luxury since 2012</p>
-  <div style="margin-top: 0.6rem; letter-spacing: 3px;">
-    <i class="fab fa-instagram" style="margin:0 6px; color:#b99a4b;"></i>
-    <i class="fab fa-whatsapp" style="margin:0 6px; color:#b99a4b;"></i>
-  </div>
-</footer>
+    <!-- LOG -->
+    <section id="view-log" hidden>
+      <div class="page-head">
+        <div>
+          <h2>History</h2>
+          <p>Every point earned and spent, most recent first.</p>
+        </div>
+      </div>
+      <div id="log-list" class="log"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toaster" class="toaster" aria-live="polite" aria-atomic="false"></div>
 
 <script>
-  (function() {
-    // Hamburger menu toggle
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('navLinks');
-    if (hamburger) {
-      hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
+(function () {
+  'use strict';
+
+  /* =========================================================
+     CONFIG
+     =========================================================
+
+     External quests. The countdown only ticks while the user
+     is actually away on that page. This app credits the points
+     — you are responsible for honouring them.
+     ========================================================= */
+
+  var SAVE_KEY  = 'questboard.v1';
+  var LEVEL_STEP = 100;
+
+  var QUESTS = [
+    {
+      id: 'sprint',
+      title: 'Deep focus sprint',
+      desc: 'Stay on this tab for 60 seconds. Switching away pauses the clock — only real focus counts.',
+      points: 20,
+      kind: 'timer',
+      seconds: 60
+    },
+    {
+      id: 'reflect',
+      title: 'Read & reflect',
+      desc: 'Read for 90 seconds, then write one sentence about what you took away.',
+      points: 30,
+      kind: 'timer',
+      seconds: 90,
+      needNote: true,
+      noteMin: 15,
+      noteHint: 'One sentence about what you just read…'
+    },
+    {
+      id: 'plan',
+      title: 'Plan the day',
+      desc: 'List your top three priorities for today.',
+      points: 25,
+      kind: 'write',
+      noteMin: 20,
+      noteHint: '1) …\n2) …\n3) …'
+    },
+    {
+      id: 'math',
+      title: 'Mental math',
+      desc: 'No calculator: what is 17 × 6?',
+      points: 10,
+      kind: 'answer',
+      answer: '102',
+      hint: 'Your answer'
+    },
+    {
+      id: 'geo',
+      title: 'Knowledge check',
+      desc: 'Which city is the capital of Japan?',
+      points: 15,
+      kind: 'answer',
+      answer: 'tokyo',
+      hint: 'Your answer'
+    },
+
+    /* ---- external quests ---- */
+    {
+      id: 'visit-a',
+      title: 'Visit Asnek',
+      desc: 'Opens asnek.netlify.app in a new tab. Stay there for 10 seconds, then come back and claim.',
+      points: 5,
+      kind: 'external',
+      url: 'https://asnek.netlify.app',
+      seconds: 10
+    },
+    {
+      id: 'visit-b',
+      title: 'Visit Nexla',
+      desc: 'Opens nexla.netlify.app in a new tab. The timer only runs while you are actually on that page.',
+      points: 5,
+      kind: 'external',
+      url: 'https://nexla.netlify.app',
+      seconds: 10
+    }
+  ];
+
+  var REWARDS = [
+    {
+      id: 'break',
+      icon: '☕',
+      title: '15-minute break',
+      desc: 'Starts a real 15-minute break timer. Take it without guilt — you paid for it.',
+      cost: 30,
+      repeat: true
+    },
+    {
+      id: 'teal',
+      icon: '🌊',
+      title: 'Teal accent',
+      desc: 'Switches the accent colour across the whole board to teal.',
+      cost: 60,
+      theme: 'teal'
+    },
+    {
+      id: 'plum',
+      icon: '🍇',
+      title: 'Plum accent',
+      desc: 'Switches the accent colour across the whole board to plum.',
+      cost: 60,
+      theme: 'plum'
+    },
+    {
+      id: 'badge',
+      icon: '★',
+      title: 'Gold star',
+      desc: 'A permanent star next to your level in the sidebar.',
+      cost: 120
+    }
+  ];
+
+  /* =========================================================
+     STATE
+     ========================================================= */
+
+  function dayKey() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function fresh() {
+    return {
+      points: 0,
+      lifetime: 0,
+      spent: 0,
+      done: {},
+      log: [],
+      owned: [],
+      theme: 'default',
+      star: false,
+      breakUntil: 0,
+      day: dayKey()
+    };
+  }
+
+  function read() {
+    var s = fresh();
+    try {
+      var raw = localStorage.getItem(SAVE_KEY);
+      if (raw) {
+        var got = JSON.parse(raw);
+        Object.keys(s).forEach(function (k) {
+          if (got[k] !== undefined && got[k] !== null) s[k] = got[k];
+        });
+      }
+    } catch (e) { s = fresh(); }
+
+    if (s.day !== dayKey()) {
+      s.done = {};
+      s.day = dayKey();
+    }
+    return s;
+  }
+
+  function write() {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }
+    catch (e) { /* private mode — keep going in memory */ }
+  }
+
+  var S = read();
+  var breakTimer = null;
+
+  /* =========================================================
+     SMALL HELPERS
+     ========================================================= */
+
+  function $(id) { return document.getElementById(id); }
+
+  function esc(v) {
+    return String(v).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function clock(sec) {
+    var t = Math.max(0, Math.round(sec));
+    var m = Math.floor(t / 60);
+    var r = t % 60;
+    return m + ':' + String(r).padStart(2, '0');
+  }
+
+  function levelOf(lifetime) {
+    return Math.floor(lifetime / LEVEL_STEP) + 1;
+  }
+
+  function questById(id) {
+    for (var i = 0; i < QUESTS.length; i++) if (QUESTS[i].id === id) return QUESTS[i];
+    return null;
+  }
+
+  function pushLog(kind, title, points) {
+    S.log.unshift({ kind: kind, title: title, points: points, at: Date.now() });
+    S.log = S.log.slice(0, 50);
+  }
+
+  function say(text, tone) {
+    var el = document.createElement('div');
+    el.className = 'toast' + (tone ? ' ' + tone : '');
+    el.textContent = text;
+    $('toaster').appendChild(el);
+    setTimeout(function () {
+      el.classList.add('gone');
+      setTimeout(function () { el.remove(); }, 320);
+    }, 3000);
+  }
+
+  /* =========================================================
+     RENDER — SIDEBAR
+     ========================================================= */
+
+  function renderSide() {
+    $('points').textContent = S.points;
+    $('spent-total').textContent = S.spent;
+
+    var lvl = levelOf(S.lifetime);
+    $('level').textContent = lvl;
+    $('badge').hidden = !S.star;
+
+    var into = S.lifetime % LEVEL_STEP;
+    var pct = Math.round((into / LEVEL_STEP) * 100);
+    $('meter-fill').style.width = pct + '%';
+    $('meter-pct').textContent = pct + '%';
+    $('meter-left').textContent = (LEVEL_STEP - into) + ' to next';
+
+    var doneToday = Object.keys(S.done).length;
+    $('nav-board').textContent = doneToday + '/' + QUESTS.length;
+    $('nav-shop').textContent = S.owned.length + ' owned';
+    $('nav-log').textContent = S.log.length;
+
+    document.body.dataset.theme = S.theme || 'default';
+  }
+
+  /* =========================================================
+     RENDER — BOARD
+     ========================================================= */
+
+  function renderBoard() {
+    var host = $('board-list');
+    host.innerHTML = '';
+
+    QUESTS.forEach(function (q) {
+      var done = !!S.done[q.id];
+
+      var card = document.createElement('article');
+      card.className = 'row-card' + (done ? ' is-done' : '');
+      card.dataset.id = q.id;
+
+      var tag = '';
+      if (done) tag = '<span class="tag done">done</span>';
+      else if (q.kind === 'external') tag = '<span class="tag link">link</span>';
+
+      card.innerHTML =
+        '<div class="row-rail">' +
+          '<div class="tick" aria-hidden="true">✓</div>' +
+          '<div class="pts">+' + q.points + '</div>' +
+        '</div>' +
+        '<div class="row-body">' +
+          '<h3 class="row-title">' + esc(q.title) + tag + '</h3>' +
+          '<p class="row-desc">' + esc(q.desc) + '</p>' +
+          '<div class="row-controls"></div>' +
+        '</div>';
+
+      var slot = card.querySelector('.row-controls');
+
+      if (done) {
+        slot.innerHTML = '<p class="msg good">Claimed today — back tomorrow.</p>';
+      } else if (q.kind === 'timer') {
+        slot.appendChild(makeTimer(q));
+      } else if (q.kind === 'answer') {
+        slot.appendChild(makeAnswer(q));
+      } else if (q.kind === 'write') {
+        slot.appendChild(makeWrite(q));
+      } else if (q.kind === 'external') {
+        slot.appendChild(makeExternal(q));
+      }
+
+      host.appendChild(card);
+    });
+
+    var doneCount = Object.keys(S.done).length;
+    $('board-progress').textContent = doneCount + ' of ' + QUESTS.length + ' claimed today';
+  }
+
+  /* ---------- timer quest ---------- */
+
+  function makeTimer(q) {
+    var box = document.createElement('div');
+    box.className = 'ctl';
+
+    var noteHTML = q.needNote
+      ? '<textarea class="area" rows="2" maxlength="240" placeholder="' +
+          esc(q.noteHint || 'Write a short note…') + '"></textarea>'
+      : '';
+
+    box.innerHTML =
+      noteHTML +
+      '<div class="ctl-row">' +
+        '<button class="btn solid go" type="button">Start · ' + clock(q.seconds) + '</button>' +
+        '<div class="inline-timer" hidden>' +
+          '<div class="bar"><i></i></div>' +
+          '<span class="clock">' + clock(q.seconds) + '</span>' +
+          '<button class="btn plain stop" type="button">Cancel</button>' +
+        '</div>' +
+      '</div>';
+
+    var goBtn   = box.querySelector('.go');
+    var live    = box.querySelector('.inline-timer');
+    var bar     = box.querySelector('.bar > i');
+    var label   = box.querySelector('.clock');
+    var stopBtn = box.querySelector('.stop');
+    var note    = box.querySelector('.area');
+    var min     = q.noteMin || 10;
+
+    if (note) {
+      goBtn.disabled = true;
+      note.addEventListener('input', function () {
+        goBtn.disabled = note.value.trim().length < min;
       });
     }
 
-    // Close menu when a link is clicked, and smooth scroll
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', (e) => {
-        if (navLinks.classList.contains('active')) {
-          navLinks.classList.remove('active');
+    goBtn.addEventListener('click', function () {
+      if (note && note.value.trim().length < min) return;
+
+      var left = q.seconds;
+      var held = false;
+      var id;
+
+      goBtn.hidden = true;
+      live.hidden = false;
+      paint();
+
+      function paint() {
+        label.textContent = held ? 'held' : clock(left);
+        var done = ((q.seconds - left) / q.seconds) * 100;
+        bar.style.width = done.toFixed(1) + '%';
+        live.classList.toggle('held', held);
+      }
+
+      id = setInterval(function () {
+        if (held) return;
+        left -= 1;
+        if (left <= 0) {
+          left = 0;
+          paint();
+          clearInterval(id);
+          document.removeEventListener('visibilitychange', onHide);
+          finish(q.id);
+          return;
         }
-        const targetId = link.getAttribute('href');
-        if (targetId && targetId !== '#') {
-          e.preventDefault();
-          const targetElem = document.querySelector(targetId);
-          if (targetElem) {
-            targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
+        paint();
+      }, 1000);
+
+      function onHide() {
+        held = document.hidden;
+        paint();
+      }
+
+      document.addEventListener('visibilitychange', onHide);
+
+      stopBtn.addEventListener('click', function () {
+        clearInterval(id);
+        document.removeEventListener('visibilitychange', onHide);
+        live.hidden = true;
+        goBtn.hidden = false;
+        goBtn.textContent = 'Restart · ' + clock(q.seconds);
+        say('Timer cancelled — nothing credited.', 'warn');
       });
     });
 
-    // Contact form alert
-    const sendBtn = document.getElementById('sendInquiry');
-    if (sendBtn) {
-      sendBtn.addEventListener('click', function() {
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        if (!name || !email) {
-          alert("Please provide your name and email for a personalized atelier consultation.");
-        } else {
-          alert(`Thank you, ${name}. Your consultation request has been received. Our team will reach out to craft your perfect senator or contemporary attire.`);
-          document.getElementById('name').value = '';
-          document.getElementById('email').value = '';
-          document.querySelector('textarea').value = '';
-        }
-      });
+    return box;
+  }
+
+  /* ---------- answer quest ---------- */
+
+  function makeAnswer(q) {
+    var box = document.createElement('div');
+    box.className = 'ctl';
+    box.innerHTML =
+      '<div class="ctl-row">' +
+        '<input class="field" type="text" autocomplete="off" autocapitalize="off" ' +
+          'spellcheck="false" placeholder="' + esc(q.hint || 'Your answer') + '" ' +
+          'style="max-width:260px" aria-label="Your answer" />' +
+        '<button class="btn solid send" type="button">Submit</button>' +
+      '</div>' +
+      '<p class="msg bad" hidden>Not correct — try again. No points until it is right.</p>';
+
+    var input = box.querySelector('input');
+    var btn   = box.querySelector('.send');
+    var warn  = box.querySelector('.msg');
+
+    function send() {
+      var v = input.value.trim().toLowerCase();
+      if (!v) { input.focus(); return; }
+
+      if (v === String(q.answer).toLowerCase()) {
+        finish(q.id);
+      } else {
+        warn.hidden = false;
+        box.classList.remove('wobble');
+        void box.offsetWidth;
+        box.classList.add('wobble');
+        input.select();
+      }
     }
 
-    // Active nav highlight on scroll
-    const sections = document.querySelectorAll("section[id]");
-    const navLinksArr = document.querySelectorAll(".nav-links a");
-    function updateActiveNav() {
-      let current = "";
-      const scrollPos = window.scrollY + 150;
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
-          current = section.getAttribute("id");
-        }
-      });
-      navLinksArr.forEach(link => {
-        link.classList.remove("active");
-        const href = link.getAttribute("href").substring(1);
-        if (href === current) link.classList.add("active");
-      });
+    btn.addEventListener('click', send);
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
+    input.focus();
+
+    return box;
+  }
+
+  /* ---------- write quest ---------- */
+
+  function makeWrite(q) {
+    var min = q.noteMin || 10;
+
+    var box = document.createElement('div');
+    box.className = 'ctl';
+    box.innerHTML =
+      '<textarea class="area" rows="3" maxlength="400" placeholder="' +
+        esc(q.noteHint || 'Write your answer…') + '"></textarea>' +
+      '<div class="ctl-row">' +
+        '<button class="btn solid" type="button" disabled>Save &amp; claim ' + q.points + '</button>' +
+        '<span class="msg note tally"></span>' +
+      '</div>';
+
+    var note = box.querySelector('.area');
+    var btn  = box.querySelector('button');
+    var tally = box.querySelector('.tally');
+
+    function upd() {
+      var len = note.value.trim().length;
+      btn.disabled = len < min;
+      tally.textContent = len + ' / ' + min + ' characters';
     }
-    window.addEventListener("scroll", updateActiveNav);
-    updateActiveNav();
-  })();
+    upd();
+
+    note.addEventListener('input', upd);
+    btn.addEventListener('click', function () {
+      if (note.value.trim().length < min) return;
+      finish(q.id);
+    });
+
+    return box;
+  }
+
+  /* ---------- external quest ---------- */
+
+  function makeExternal(q) {
+    var need = q.seconds * 1000;
+    var banked = 0;
+    var awayAt = null;
+    var opened = false;
+    var cleared = false;
+
+    var box = document.createElement('div');
+    box.className = 'ctl';
+    box.innerHTML =
+      '<div class="ctl-row">' +
+        '<button class="btn solid open" type="button">Open link ↗</button>' +
+        '<button class="btn solid claim" type="button" disabled>Claim ' + q.points + '</button>' +
+      '</div>' +
+      '<p class="msg note status">Opens in a new tab. The timer runs only while that page is open.</p>';
+
+    var openBtn  = box.querySelector('.open');
+    var claimBtn = box.querySelector('.claim');
+    var status   = box.querySelector('.status');
+
+    function left() {
+      return Math.max(0, Math.ceil((need - banked) / 1000));
+    }
+
+    function clear() {
+      cleared = true;
+      document.removeEventListener('visibilitychange', watch);
+      claimBtn.disabled = false;
+      openBtn.disabled = true;
+      openBtn.textContent = 'Visited ✓';
+      status.textContent = 'Visit verified. Claim your points.';
+      status.className = 'msg good status';
+    }
+
+    function watch() {
+      if (document.hidden) {
+        awayAt = Date.now();
+      } else if (awayAt !== null) {
+        banked += Date.now() - awayAt;
+        awayAt = null;
+
+        if (banked >= need) {
+          clear();
+        } else if (opened && !cleared) {
+          status.textContent = 'Paused — ' + left() + 's still needed. Return to that page.';
+          status.className = 'msg warn status';
+        }
+      }
+    }
+
+    openBtn.addEventListener('click', function () {
+      var w = window.open(q.url, '_blank', 'noopener');
+      if (!w) {
+        status.textContent = 'Pop-up blocked. Allow pop-ups for this page and try again.';
+        status.className = 'msg bad status';
+        return;
+      }
+      opened = true;
+      awayAt = Date.now();
+      openBtn.disabled = true;
+      openBtn.textContent = 'Link opened';
+      status.textContent = 'Counting time on the other page…';
+      status.className = 'msg note status';
+      document.addEventListener('visibilitychange', watch);
+    });
+
+    claimBtn.addEventListener('click', function () {
+      if (cleared) finish(q.id);
+    });
+
+    return box;
+  }
+
+  /* =========================================================
+     FINISH A QUEST
+     ========================================================= */
+
+  function finish(id) {
+    var q = questById(id);
+    if (!q || S.done[id]) return;
+
+    var before = levelOf(S.lifetime);
+
+    S.done[id] = Date.now();
+    S.points += q.points;
+    S.lifetime += q.points;
+    pushLog('in', q.title, q.points);
+
+    write();
+    renderSide();
+    renderBoard();
+    renderShop();
+    renderLog();
+
+    say('+' + q.points + ' pts · ' + q.title, 'good');
+
+    var after = levelOf(S.lifetime);
+    if (after > before) {
+      setTimeout(function () { say('Level ' + after + ' reached', 'good'); }, 420);
+    }
+  }
+
+  /* =========================================================
+     RENDER — SHOP
+     ========================================================= */
+
+  function renderShop() {
+    var host = $('shop-list');
+    host.innerHTML = '';
+
+    REWARDS.forEach(function (r) {
+      var owned = !r.repeat && S.owned.indexOf(r.id) !== -1;
+      var canAfford = S.points >= r.cost;
+
+      var card = document.createElement('article');
+      card.className = 'reward-card' +
+        (owned ? ' is-owned' : '') +
+        (!owned && !canAfford ? ' is-locked' : '');
+
+      var btnLabel;
+      if (owned) btnLabel = 'Unlocked';
+      else if (canAfford) btnLabel = 'Redeem';
+      else btnLabel = 'Need ' + (r.cost - S.points) + ' more';
+
+      card.innerHTML =
+        '<div class="reward-icon" aria-hidden="true">' + esc(r.icon) + '</div>' +
+        '<div class="reward-info">' +
+          '<h3>' + esc(r.title) + '</h3>' +
+          '<p>' + esc(r.desc) + '</p>' +
+        '</div>' +
+        '<div class="reward-cost">' + r.cost + ' pts</div>' +
+        '<button class="btn ' + (owned ? 'line' : 'solid') + '" type="button"' +
+          (owned || !canAfford ? ' disabled' : '') + '>' + esc(btnLabel) + '</button>';
+
+      var btn = card.querySelector('button');
+      if (!owned && canAfford) {
+        btn.addEventListener('click', function () { buy(r); });
+      }
+
+      host.appendChild(card);
+    });
+  }
+
+  function buy(r) {
+    if (S.points < r.cost) return;
+    if (!r.repeat && S.owned.indexOf(r.id) !== -1) return;
+
+    S.points -= r.cost;
+    S.spent += r.cost;
+
+    if (!r.repeat) S.owned.push(r.id);
+    pushLog('out', r.title, -r.cost);
+
+    if (r.theme) S.theme = r.theme;
+    if (r.id === 'badge') S.star = true;
+    if (r.id === 'break') S.breakUntil = Date.now() + 15 * 60 * 1000;
+
+    write();
+    renderSide();
+    renderShop();
+    renderLog();
+    renderBreak();
+
+    say('Redeemed · ' + r.title, 'good');
+  }
+
+  /* =========================================================
+     RENDER — LOG
+     ========================================================= */
+
+  function renderLog() {
+    var host = $('log-list');
+
+    if (!S.log.length) {
+      host.innerHTML = '<div class="blank">Nothing logged yet. Finish a quest to start.</div>';
+      return;
+    }
+
+    host.innerHTML = S.log.map(function (e) {
+      var isIn = e.points > 0;
+      var sign = isIn ? '+' : '';
+      return '<div class="log-item">' +
+        '<span class="log-mark ' + (isIn ? 'in' : 'out') + '">' + (isIn ? '▲' : '▼') + '</span>' +
+        '<span class="log-name">' + esc(e.title) + '</span>' +
+        '<span class="log-amt ' + (isIn ? 'in' : 'out') + '">' + sign + e.points + '</span>' +
+        '<span class="log-when">' + new Date(e.at).toLocaleString() + '</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  /* =========================================================
+     BREAK TIMER
+     ========================================================= */
+
+  function renderBreak() {
+    var strip = $('break-strip');
+    var left = S.breakUntil - Date.now();
+
+    if (left > 0) {
+      strip.hidden = false;
+      $('break-clock').textContent = clock(Math.ceil(left / 1000));
+
+      if (!breakTimer) {
+        breakTimer = setInterval(function () {
+          var l = S.breakUntil - Date.now();
+          if (l <= 0) { stopBreak(false); return; }
+          $('break-clock').textContent = clock(Math.ceil(l / 1000));
+        }, 1000);
+      }
+    } else {
+      strip.hidden = true;
+    }
+  }
+
+  function stopBreak(manual) {
+    var was = S.breakUntil > 0;
+    S.breakUntil = 0;
+
+    if (breakTimer) { clearInterval(breakTimer); breakTimer = null; }
+    write();
+    $('break-strip').hidden = true;
+
+    if (!was) return;
+    say(manual ? 'Break ended early.' : 'Break over.', manual ? 'warn' : 'good');
+  }
+
+  /* =========================================================
+     NAVIGATION
+     ========================================================= */
+
+  var views = ['board', 'shop', 'log'];
+
+  document.querySelectorAll('.nav-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = btn.dataset.view;
+
+      document.querySelectorAll('.nav-btn').forEach(function (b) {
+        b.setAttribute('aria-current', b === btn ? 'true' : 'false');
+      });
+
+      views.forEach(function (v) {
+        $('view-' + v).hidden = (v !== target);
+      });
+    });
+  });
+
+  /* =========================================================
+     RESET
+     ========================================================= */
+
+  $('wipe').addEventListener('click', function () {
+    if (!window.confirm('Delete all points, unlocks and history? This cannot be undone.')) return;
+
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+
+    S = fresh();
+    if (breakTimer) { clearInterval(breakTimer); breakTimer = null; }
+
+    write();
+    renderSide();
+    renderBoard();
+    renderShop();
+    renderLog();
+    renderBreak();
+
+    say('Progress wiped.', 'warn');
+  });
+
+  $('break-stop').addEventListener('click', function () { stopBreak(true); });
+
+  /* =========================================================
+     MIDNIGHT ROLLOVER
+     ========================================================= */
+
+  setInterval(function () {
+    if (S.day !== dayKey()) {
+      S.day = dayKey();
+      S.done = {};
+      write();
+      renderBoard();
+      renderSide();
+      say('New day — quests reset.', 'good');
+    }
+  }, 30000);
+
+  /* =========================================================
+     BOOT
+     ========================================================= */
+
+  renderSide();
+  renderBoard();
+  renderShop();
+  renderLog();
+  renderBreak();
+
+})();
 </script>
 </body>
 </html>
