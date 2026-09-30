@@ -1,1454 +1,2406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="9de5e6800eea3075d0bc10a2bf60693e44c97059" content="9de5e6800eea3075d0bc10a2bf60693e44c97059" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="color-scheme" content="light" />
-<title>Quest Board — Tasks &amp; Rewards</title>
-<style>
-  :root{
-    --bg:#f6f3ec;
-    --surface:#ffffff;
-    --surface-2:#fbf9f4;
-    --ink:#1d2b25;
-    --ink-soft:#5c6b63;
-    --ink-faint:#8f9c94;
-    --line:#e3ddd1;
-    --line-strong:#cfc7b7;
-    --green:#1f7a5a;
-    --green-soft:#e3f2ec;
-    --amber:#b8722a;
-    --amber-soft:#fbecdb;
-    --red:#b8443a;
-    --radius:10px;
-    --radius-lg:16px;
-    --shadow-sm:0 1px 2px rgba(29,43,37,.06);
-    --shadow-md:0 4px 14px rgba(29,43,37,.07);
-    --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-  }
+  <meta charset="UTF-8">
 
-  /* warm alternate accents unlocked by rewards */
-  body[data-theme="teal"]{ --green:#0f7b8a; --green-soft:#e0f2f4; }
-  body[data-theme="plum"]{ --green:#7a3d6b; --green-soft:#f5e6f1; }
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-  *,*::before,*::after{ box-sizing:border-box; }
-  html,body{ margin:0; padding:0; }
+  <title>Quest Board — Tasks & Rewards</title>
 
-  body{
-    font-family:var(--font);
-    background:var(--bg);
-    color:var(--ink);
-    min-height:100vh;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
+  <!-- HilltopAds verification -->
+  <meta name="9de5e6800eea3075d0bc10a2bf60693e44c97059"
+        content="9de5e6800eea3075d0bc10a2bf60693e44c97059">
 
-  /* ======================= LAYOUT ======================= */
-  .shell{
-    display:grid;
-    grid-template-columns:264px 1fr;
-    min-height:100vh;
-  }
-
-  /* ======================= SIDEBAR ======================= */
-  .side{
-    background:var(--surface);
-    border-right:1px solid var(--line);
-    padding:26px 20px;
-    display:flex;
-    flex-direction:column;
-    gap:26px;
-    position:sticky;
-    top:0;
-    height:100vh;
-  }
-
-  .mark{
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .mark-glyph{
-    width:38px; height:38px;
-    border-radius:10px;
-    background:var(--green);
-    color:#fff;
-    display:grid; place-items:center;
-    font-size:19px;
-    font-weight:700;
-    flex:0 0 auto;
-  }
-  .mark-text h1{
-    margin:0;
-    font-size:.98rem;
-    letter-spacing:-.01em;
-    font-weight:700;
-  }
-  .mark-text p{
-    margin:0;
-    font-size:.72rem;
-    color:var(--ink-faint);
-    letter-spacing:.02em;
-    text-transform:uppercase;
-  }
-
-  /* balance block */
-  .balance{
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    padding:16px;
-  }
-  .balance .big{
-    font-size:2rem;
-    font-weight:700;
-    font-variant-numeric:tabular-nums;
-    line-height:1.1;
-    letter-spacing:-.02em;
-  }
-  .balance .big small{
-    font-size:.7rem;
-    font-weight:600;
-    color:var(--ink-faint);
-    text-transform:uppercase;
-    letter-spacing:.1em;
-    margin-left:4px;
-  }
-  .balance .sub{
-    margin-top:2px;
-    font-size:.76rem;
-    color:var(--ink-soft);
-  }
-
-  /* level meter */
-  .meter{ margin-top:14px; }
-  .meter-track{
-    height:6px;
-    background:#e9e3d7;
-    border-radius:99px;
-    overflow:hidden;
-  }
-  .meter-fill{
-    height:100%;
-    width:0;
-    background:var(--green);
-    border-radius:99px;
-    transition:width .35s ease;
-  }
-  .meter-label{
-    display:flex;
-    justify-content:space-between;
-    margin-top:6px;
-    font-size:.7rem;
-    color:var(--ink-faint);
-    font-variant-numeric:tabular-nums;
-  }
-
-  /* nav */
-  .nav{ display:flex; flex-direction:column; gap:3px; }
-  .nav-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    width:100%;
-    text-align:left;
-    background:none;
-    border:0;
-    border-radius:var(--radius);
-    padding:10px 12px;
-    font-family:inherit;
-    font-size:.87rem;
-    font-weight:600;
-    color:var(--ink-soft);
-    cursor:pointer;
-    transition:background .16s, color .16s;
-  }
-  .nav-btn:hover{ background:var(--surface-2); color:var(--ink); }
-  .nav-btn[aria-current="true"]{
-    background:var(--green-soft);
-    color:var(--green);
-  }
-  .nav-btn .count{
-    font-size:.7rem;
-    font-weight:700;
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    color:var(--ink-faint);
-    border-radius:99px;
-    padding:1px 8px;
-    font-variant-numeric:tabular-nums;
-  }
-  .nav-btn[aria-current="true"] .count{
-    background:#fff;
-    border-color:transparent;
-    color:var(--green);
-  }
-
-  .side-foot{
-    margin-top:auto;
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-  }
-  .side-note{
-    font-size:.7rem;
-    color:var(--ink-faint);
-    line-height:1.5;
-    margin:0;
-  }
-
-  /* ======================= MAIN ======================= */
-  .main{
-    padding:30px 34px 70px;
-    max-width:1000px;
-  }
-
-  .page-head{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:16px;
-    flex-wrap:wrap;
-    margin-bottom:22px;
-    padding-bottom:16px;
-    border-bottom:1px solid var(--line);
-  }
-  .page-head h2{
-    margin:0 0 3px;
-    font-size:1.35rem;
-    letter-spacing:-.02em;
-    font-weight:700;
-  }
-  .page-head p{
-    margin:0;
-    font-size:.83rem;
-    color:var(--ink-soft);
-    max-width:62ch;
-  }
-
-  /* ======================= TASK ROWS ======================= */
-  .rows{ display:flex; flex-direction:column; gap:10px; }
-
-  .row-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    box-shadow:var(--shadow-sm);
-    padding:16px 18px;
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
-    transition:border-color .18s, box-shadow .18s;
-  }
-  .row-card:hover{ border-color:var(--line-strong); box-shadow:var(--shadow-md); }
-  .row-card.is-done{ background:var(--surface-2); opacity:.78; }
-  .row-card.is-open{ border-color:var(--green); }
-
-  /* left rail: status circle + points */
-  .row-rail{
-    flex:0 0 auto;
-    width:56px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:8px;
-    padding-top:2px;
-  }
-  .tick{
-    width:26px; height:26px;
-    border-radius:50%;
-    border:2px solid var(--line-strong);
-    display:grid; place-items:center;
-    font-size:13px;
-    color:transparent;
-    background:#fff;
-    transition:all .2s;
-  }
-  .row-card.is-done .tick{
-    background:var(--green);
-    border-color:var(--green);
-    color:#fff;
-  }
-  .pts{
-    font-family:var(--mono);
-    font-size:.74rem;
-    font-weight:700;
-    color:var(--green);
-    background:var(--green-soft);
-    border-radius:6px;
-    padding:2px 7px;
-    white-space:nowrap;
-  }
-
-  /* body */
-  .row-body{ flex:1; min-width:0; }
-  .row-title{
-    margin:0 0 3px;
-    font-size:.97rem;
-    font-weight:700;
-    letter-spacing:-.01em;
-  }
-  .row-desc{
-    margin:0;
-    font-size:.83rem;
-    color:var(--ink-soft);
-  }
-  .row-controls{ margin-top:12px; }
-
-  .tag{
-    display:inline-block;
-    font-size:.66rem;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    border-radius:5px;
-    padding:2px 7px;
-    margin-left:8px;
-    vertical-align:2px;
-  }
-  .tag.link{ background:var(--green-soft); color:var(--green); }
-  .tag.done{ background:#e9e3d7; color:var(--ink-faint); }
-
-  /* ======================= CONTROLS ======================= */
-  .ctl{ display:flex; flex-direction:column; gap:10px; }
-  .ctl-row{ display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
-
-  .btn{
-    font-family:inherit;
-    font-size:.83rem;
-    font-weight:600;
-    border-radius:9px;
-    padding:8px 15px;
-    border:1px solid transparent;
-    cursor:pointer;
-    transition:background .16s, border-color .16s, color .16s, opacity .16s;
-    white-space:nowrap;
-  }
-  .btn.solid{ background:var(--green); color:#fff; }
-  .btn.solid:hover:not(:disabled){ filter:brightness(1.08); }
-  .btn.line{
-    background:#fff;
-    border-color:var(--line-strong);
-    color:var(--ink);
-  }
-  .btn.line:hover:not(:disabled){ border-color:var(--green); color:var(--green); }
-  .btn.plain{
-    background:none;
-    color:var(--ink-soft);
-    padding:8px 10px;
-  }
-  .btn.plain:hover:not(:disabled){ color:var(--red); }
-  .btn:disabled{ opacity:.42; cursor:not-allowed; }
-  .btn.tiny{ padding:6px 11px; font-size:.76rem; }
-
-  .field, .area{
-    width:100%;
-    background:#fff;
-    border:1px solid var(--line-strong);
-    border-radius:9px;
-    padding:9px 12px;
-    color:var(--ink);
-    font-family:inherit;
-    font-size:.85rem;
-    resize:vertical;
-  }
-  .field::placeholder, .area::placeholder{ color:var(--ink-faint); }
-  .field:focus, .area:focus{
-    outline:none;
-    border-color:var(--green);
-    box-shadow:0 0 0 3px var(--green-soft);
-  }
-
-  /* inline timer */
-  .inline-timer{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    flex:1;
-    min-width:220px;
-  }
-  .inline-timer[hidden]{ display:none; }
-  .bar{
-    flex:1;
-    height:7px;
-    background:#e9e3d7;
-    border-radius:99px;
-    overflow:hidden;
-  }
-  .bar > i{
-    display:block;
-    height:100%;
-    width:0;
-    background:var(--green);
-    border-radius:99px;
-    transition:width .25s linear;
-  }
-  .clock{
-    font-family:var(--mono);
-    font-size:.84rem;
-    font-weight:700;
-    color:var(--green);
-    min-width:52px;
-    text-align:right;
-    font-variant-numeric:tabular-nums;
-  }
-  .inline-timer.held .clock{ color:var(--amber); }
-  .inline-timer.held .bar > i{ background:var(--amber); }
-
-  /* messages */
-  .msg{ margin:0; font-size:.77rem; }
-  .msg.note{ color:var(--ink-faint); }
-  .msg.good{ color:var(--green); font-weight:600; }
-  .msg.bad{ color:var(--red); font-weight:600; }
-  .msg.warn{ color:var(--amber); font-weight:600; }
-
-  /* ======================= REWARD ROWS ======================= */
-  .reward-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    box-shadow:var(--shadow-sm);
-    padding:16px 18px;
-    display:flex;
-    gap:16px;
-    align-items:center;
-    transition:border-color .18s, box-shadow .18s;
-  }
-  .reward-card:hover{ border-color:var(--line-strong); box-shadow:var(--shadow-md); }
-  .reward-card.is-owned{ border-color:var(--green); background:var(--green-soft); }
-  .reward-card.is-locked{ opacity:.72; }
-
-  .reward-icon{
-    width:44px; height:44px;
-    flex:0 0 auto;
-    border-radius:11px;
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    display:grid; place-items:center;
-    font-size:20px;
-  }
-  .reward-card.is-owned .reward-icon{
-    background:#fff;
-    border-color:var(--green);
-  }
-  .reward-info{ flex:1; min-width:0; }
-  .reward-info h3{
-    margin:0 0 2px;
-    font-size:.95rem;
-    font-weight:700;
-  }
-  .reward-info p{
-    margin:0;
-    font-size:.82rem;
-    color:var(--ink-soft);
-  }
-  .reward-cost{
-    font-family:var(--mono);
-    font-size:.78rem;
-    font-weight:700;
-    color:var(--amber);
-    background:var(--amber-soft);
-    border-radius:6px;
-    padding:3px 9px;
-    white-space:nowrap;
-  }
-  .reward-card.is-owned .reward-cost{
-    color:var(--green);
-    background:#fff;
-  }
-
-  /* ======================= HISTORY ======================= */
-  .log{ display:flex; flex-direction:column; gap:0; }
-  .log-item{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:12px 4px;
-    border-bottom:1px solid var(--line);
-    font-size:.84rem;
-  }
-  .log-item:last-child{ border-bottom:0; }
-  .log-mark{
-    width:26px; height:26px;
-    flex:0 0 auto;
-    border-radius:7px;
-    display:grid; place-items:center;
-    font-size:13px;
-    font-weight:700;
-  }
-  .log-mark.in{ background:var(--green-soft); color:var(--green); }
-  .log-mark.out{ background:var(--amber-soft); color:var(--amber); }
-  .log-name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .log-amt{
-    font-family:var(--mono);
-    font-weight:700;
-    font-variant-numeric:tabular-nums;
-  }
-  .log-amt.in{ color:var(--green); }
-  .log-amt.out{ color:var(--amber); }
-  .log-when{
-    font-size:.72rem;
-    color:var(--ink-faint);
-    white-space:nowrap;
-  }
-  .blank{
-    padding:34px 4px;
-    text-align:center;
-    color:var(--ink-faint);
-    font-size:.85rem;
-  }
-
-  /* ======================= BREAK STRIP ======================= */
-  .strip{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-    flex-wrap:wrap;
-    background:var(--green-soft);
-    border:1px solid var(--green);
-    border-radius:var(--radius-lg);
-    padding:12px 18px;
-    margin-bottom:18px;
-    font-size:.85rem;
-  }
-  .strip[hidden]{ display:none; }
-  .strip strong{ font-family:var(--mono); }
-
-  /* ======================= TOASTS ======================= */
-  .toaster{
-    position:fixed;
-    left:50%;
-    bottom:22px;
-    transform:translateX(-50%);
-    z-index:80;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    align-items:center;
-    pointer-events:none;
-    width:max-content;
-    max-width:calc(100vw - 32px);
-  }
-  .toast{
-    background:var(--ink);
-    color:#f6f3ec;
-    font-size:.82rem;
-    font-weight:600;
-    padding:10px 16px;
-    border-radius:99px;
-    box-shadow:0 6px 20px rgba(29,43,37,.22);
-    animation:pop .22s ease;
-    text-align:center;
-  }
-  .toast.good{ background:var(--green); color:#fff; }
-  .toast.warn{ background:var(--amber); color:#fff; }
-  .toast.gone{ opacity:0; transform:translateY(8px); transition:opacity .3s, transform .3s; }
-
-  @keyframes pop{
-    from{ opacity:0; transform:translateY(10px) scale(.96); }
-    to{ opacity:1; transform:none; }
-  }
-  @keyframes wobble{
-    10%,90%{ transform:translateX(-2px); }
-    20%,80%{ transform:translateX(3px); }
-    30%,50%,70%{ transform:translateX(-5px); }
-    40%,60%{ transform:translateX(5px); }
-  }
-  .wobble{ animation:wobble .4s; }
-
-  /* ======================= MOBILE ======================= */
-  @media (max-width:820px){
-    .shell{ grid-template-columns:1fr; }
-    .side{
-      position:static;
-      height:auto;
-      border-right:0;
-      border-bottom:1px solid var(--line);
-      padding:18px 16px;
-      gap:18px;
+  <style>
+    * {
+      box-sizing: border-box;
     }
-    .nav{ flex-direction:row; overflow-x:auto; }
-    .nav-btn{ width:auto; white-space:nowrap; }
-    .side-foot{ flex-direction:row; align-items:center; justify-content:space-between; }
-    .side-note{ display:none; }
-    .main{ padding:22px 16px 60px; }
-    .row-card{ flex-direction:column; gap:10px; }
-    .row-rail{
-      flex-direction:row;
-      width:auto;
-      align-items:center;
-      gap:10px;
-    }
-  }
 
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
-  }
-</style>
+    :root {
+      --bg: #080a0f;
+      --panel: #10131a;
+      --panel2: #151922;
+      --border: rgba(255,255,255,.08);
+      --text: #f4f6fb;
+      --muted: #9ba3b4;
+      --accent: #8b7cff;
+      --accent2: #6d5dfc;
+      --good: #48d597;
+      --warn: #f0bd54;
+      --bad: #ff6b6b;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+
+    body.teal {
+      --accent: #18c7b2;
+      --accent2: #0da594;
+    }
+
+    body.plum {
+      --accent: #c66cff;
+      --accent2: #9c45d5;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(139,124,255,.10),
+          transparent 30%
+        ),
+        var(--bg);
+      color: var(--text);
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+
+    /* =========================
+       SIDEBAR
+    ========================= */
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      border-right: 1px solid var(--border);
+      background: rgba(10,12,17,.92);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      margin-bottom: 28px;
+    }
+
+    .brand span {
+      color: var(--accent);
+    }
+
+    .profile {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .points {
+      font-size: 29px;
+      font-weight: 800;
+    }
+
+    .points-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .level {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .progress {
+      margin-top: 8px;
+      height: 7px;
+      background: rgba(255,255,255,.07);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress > div {
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      border-radius: inherit;
+      transition: width .3s ease;
+    }
+
+    .side-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .stat {
+      padding: 10px;
+      background: rgba(255,255,255,.03);
+      border-radius: 11px;
+    }
+
+    .stat small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 3px;
+    }
+
+    nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      padding: 12px;
+      border-radius: 11px;
+      transition: .2s;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+
+    .nav-btn.active {
+      box-shadow: inset 3px 0 var(--accent);
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: -.04em;
+    }
+
+    .topbar p {
+      color: var(--muted);
+      margin: 7px 0 0;
+    }
+
+    .reset-btn {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 9px 13px;
+    }
+
+    .reset-btn:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    /* =========================
+       ADS
+    ========================= */
+
+    .ad-wrap {
+      width: 100%;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .ad-inner {
+      width: 100%;
+      text-align: center;
+    }
+
+    .ad-label {
+      color: var(--muted);
+      opacity: .55;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 6px;
+    }
+
+    .ad-box {
+      width: 100%;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .ad-box.mobile {
+      min-height: 100px;
+    }
+
+    @media (max-width: 600px) {
+      .ad-box {
+        min-height: 100px;
+      }
+    }
+
+    /* =========================
+       QUEST CARDS
+    ========================= */
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section-title {
+      margin: 26px 0 14px;
+      font-size: 20px;
+    }
+
+    .quests {
+      display: grid;
+      gap: 13px;
+    }
+
+    .quest {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      transition: transform .2s, border-color .2s;
+    }
+
+    .quest:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.13);
+    }
+
+    .quest.done {
+      opacity: .58;
+    }
+
+    .quest-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .quest h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .quest p {
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 7px 0 0;
+      font-size: 14px;
+    }
+
+    .reward-points {
+      white-space: nowrap;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .controls {
+      margin-top: 16px;
+    }
+
+    .ctl-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      padding: 9px 13px;
+      border-radius: 10px;
+      transition: .2s;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: rgba(255,255,255,.18);
+      transform: translateY(-1px);
+    }
+
+    .btn.solid {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: .4;
+    }
+
+    .input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 11px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .msg {
+      margin-top: 9px;
+      font-size: 12px;
+    }
+
+    .note {
+      color: var(--muted);
+    }
+
+    .good {
+      color: var(--good);
+    }
+
+    .warn {
+      color: var(--warn);
+    }
+
+    .bad {
+      color: var(--bad);
+    }
+
+    /* =========================
+       REWARDS
+    ========================= */
+
+    .rewards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 13px;
+    }
+
+    .reward {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 19px;
+    }
+
+    .reward-icon {
+      font-size: 27px;
+    }
+
+    .reward h3 {
+      margin: 12px 0 5px;
+    }
+
+    .reward p {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 13px;
+      min-height: 42px;
+    }
+
+    .reward-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      gap: 10px;
+    }
+
+    .cost {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    /* =========================
+       HISTORY
+    ========================= */
+
+    .history {
+      display: grid;
+      gap: 8px;
+    }
+
+    .history-item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .history-item small {
+      color: var(--muted);
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      background: #181b23;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: .25s;
+      z-index: 100;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* =========================
+       BREAK TIMER
+    ========================= */
+
+    .break {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      padding: 14px 17px;
+      border-radius: 15px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 90;
+    }
+
+    .break.show {
+      display: block;
+    }
+
+    .break strong {
+      color: var(--accent);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      nav {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .nav-btn {
+        text-align: center;
+      }
+
+      main {
+        padding: 20px 15px 50px;
+      }
+
+      .rewards {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .topbar {
+        flex-direction: column;
+      }
+
+      .quest-top {
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      .reward-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
-<body data-theme="default">
 
-<div class="shell">
+<body>
 
-  <!-- ================= SIDEBAR ================= -->
-  <aside class="side">
+<div class="app">
 
-    <div class="mark">
-      <div class="mark-glyph" aria-hidden="true">Q</div>
-      <div class="mark-text">
-        <h1>Quest Board</h1>
-        <p>Earn · Redeem</p>
-      </div>
+  <!-- =========================
+       SIDEBAR
+  ========================= -->
+
+  <aside class="sidebar">
+
+    <div class="brand">
+      Quest<span>Board</span>
     </div>
 
-    <div class="balance">
-      <div class="big"><span id="points">0</span><small>pts</small></div>
-      <div class="sub">Level <span id="level">1</span><span id="badge" hidden> ★</span> · <span id="spent-total">0</span> spent</div>
+    <div class="profile">
 
-      <div class="meter">
-        <div class="meter-track">
-          <div class="meter-fill" id="meter-fill"></div>
-        </div>
-        <div class="meter-label">
-          <span id="meter-left">100 to next</span>
-          <span id="meter-pct">0%</span>
-        </div>
+      <div class="points" id="points">
+        0
       </div>
+
+      <div class="points-label">
+        available points
+      </div>
+
+      <div class="level">
+        Level <strong id="level">1</strong>
+        <span id="star"></span>
+      </div>
+
+      <div class="progress">
+        <div id="progress"></div>
+      </div>
+
+      <div class="side-stats">
+
+        <div class="stat">
+          <small>Lifetime</small>
+          <strong id="lifetime">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Spent</small>
+          <strong id="spent">0</strong>
+        </div>
+
+      </div>
+
     </div>
 
-    <nav class="nav" aria-label="Sections">
-      <button class="nav-btn" data-view="board" aria-current="true" type="button">
-        <span>Quest board</span>
-        <span class="count" id="nav-board">0</span>
+    <nav>
+
+      <button class="nav-btn active" data-page="quests">
+        Quest board
       </button>
-      <button class="nav-btn" data-view="shop" aria-current="false" type="button">
-        <span>Rewards</span>
-        <span class="count" id="nav-shop">0</span>
+
+      <button class="nav-btn" data-page="rewards">
+        Rewards
       </button>
-      <button class="nav-btn" data-view="log" aria-current="false" type="button">
-        <span>History</span>
-        <span class="count" id="nav-log">0</span>
+
+      <button class="nav-btn" data-page="history">
+        History
       </button>
+
     </nav>
 
-    <div class="side-foot">
-      <button id="wipe" class="btn line tiny" type="button">Reset progress</button>
-      <p class="side-note">
-        Saved in this browser only. External quests open a link you supply — points are
-        credited here once the visit is verified.
-      </p>
-    </div>
   </aside>
 
-  <!-- ================= MAIN ================= -->
-  <main class="main">
 
-    <div id="break-strip" class="strip" hidden>
-      <span>Break running — <strong id="break-clock">15:00</strong> remaining. You spent points for this.</span>
-      <button id="break-stop" class="btn line tiny" type="button">End break</button>
+  <!-- =========================
+       MAIN
+  ========================= -->
+
+  <main>
+
+    <div class="topbar">
+
+      <div>
+        <h1 id="pageTitle">
+          Quest Board
+        </h1>
+
+        <p id="pageDescription">
+          Complete simple tasks and collect points.
+        </p>
+      </div>
+
+      <button
+        class="reset-btn"
+        id="resetBtn">
+        Reset
+      </button>
+
     </div>
 
-    <!-- BOARD -->
-    <section id="view-board">
-      <div class="page-head">
-        <div>
-          <h2>Quest board</h2>
-          <p>
-            Each quest is verified before points are credited — a timer that really ran,
-            an answer that was really correct, or a link you really visited.
-          </p>
+
+    <!-- =====================================================
+         QUEST PAGE
+    ====================================================== -->
+
+    <section
+      class="section active"
+      id="questsPage">
+
+      <!-- AD #1
+           Paste your HilltopAds zone code inside .ad-box
+      -->
+
+      <div class="ad-wrap">
+
+        <div class="ad-inner">
+
+          <div class="ad-label">
+            Advertisement
+          </div>
+
+          <div class="ad-box">
+
+            <!--
+              PASTE HILLTOPADS ZONE #1 HERE
+            -->
+
+          </div>
+
         </div>
-        <span class="msg note" id="board-progress"></span>
+
       </div>
-      <div id="board-list" class="rows"></div>
+
+
+      <h2 class="section-title">
+        Today's quests
+      </h2>
+
+      <div
+        class="quests"
+        id="questList">
+      </div>
+
+
+      <!-- AD #2 -->
+
+      <div class="ad-wrap">
+
+        <div class="ad-inner">
+
+          <div class="ad-label">
+            Advertisement
+          </div>
+
+          <div class="ad-box">
+
+            <!--
+              PASTE HILLTOPADS ZONE #2 HERE
+            -->
+
+          </div>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <!-- SHOP -->
-    <section id="view-shop" hidden>
-      <div class="page-head">
-        <div>
-          <h2>Rewards</h2>
-          <p>Spend points you actually earned. Unlocks apply immediately and stay.</p>
-        </div>
+
+    <!-- =====================================================
+         REWARDS PAGE
+    ====================================================== -->
+
+    <section
+      class="section"
+      id="rewardsPage">
+
+      <h2 class="section-title">
+        Rewards
+      </h2>
+
+      <div
+        class="rewards"
+        id="rewardList">
       </div>
-      <div id="shop-list" class="rows"></div>
+
+
+      <!-- AD #3 -->
+
+      <div class="ad-wrap">
+
+        <div class="ad-inner">
+
+          <div class="ad-label">
+            Advertisement
+          </div>
+
+          <div class="ad-box mobile">
+
+            <!--
+              PASTE HILLTOPADS ZONE #3 HERE
+            -->
+
+          </div>
+
+        </div>
+
+      </div>
+
     </section>
 
-    <!-- LOG -->
-    <section id="view-log" hidden>
-      <div class="page-head">
-        <div>
-          <h2>History</h2>
-          <p>Every point earned and spent, most recent first.</p>
-        </div>
+
+    <!-- =====================================================
+         HISTORY PAGE
+    ====================================================== -->
+
+    <section
+      class="section"
+      id="historyPage">
+
+      <h2 class="section-title">
+        Activity history
+      </h2>
+
+      <div
+        class="history"
+        id="historyList">
       </div>
-      <div id="log-list" class="log"></div>
+
     </section>
 
   </main>
+
 </div>
 
-<div id="toaster" class="toaster" aria-live="polite" aria-atomic="false"></div>
+
+<!-- Toast -->
+
+<div
+  class="toast"
+  id="toast">
+</div>
+
+
+<!-- Break timer -->
+
+<div
+  class="break"
+  id="breakTimer">
+
+  ☕ Break:
+  <strong id="breakTime">
+    15:00
+  </strong>
+
+</div>
+
 
 <script>
-(function () {
-  'use strict';
 
-  /* =========================================================
-     CONFIG
-     =========================================================
+  /* =====================================================
+     STORAGE
+  ===================================================== */
 
-     External quests. The countdown only ticks while the user
-     is actually away on that page. This app credits the points
-     — you are responsible for honouring them.
-     ========================================================= */
+  const SAVE_KEY = "questboard.v1";
 
-  var SAVE_KEY  = 'questboard.v1';
-  var LEVEL_STEP = 100;
+  const LEVEL_STEP = 100;
 
-  var QUESTS = [
+
+  /* =====================================================
+     QUESTS
+  ===================================================== */
+
+  const QUESTS = [
+
     {
-      id: 'sprint',
-      title: 'Deep focus sprint',
-      desc: 'Stay on this tab for 60 seconds. Switching away pauses the clock — only real focus counts.',
+      id: "sprint",
+      title: "Deep focus sprint",
+      desc: "Stay on this tab for 60 seconds.",
       points: 20,
-      kind: 'timer',
+      kind: "timer",
       seconds: 60
     },
+
     {
-      id: 'reflect',
-      title: 'Read & reflect',
-      desc: 'Read for 90 seconds, then write one sentence about what you took away.',
+      id: "reflect",
+      title: "Read & reflect",
+      desc: "Read for 90 seconds, then write one sentence.",
       points: 30,
-      kind: 'timer',
+      kind: "timer",
       seconds: 90,
       needNote: true,
-      noteMin: 15,
-      noteHint: 'One sentence about what you just read…'
-    },
-    {
-      id: 'plan',
-      title: 'Plan the day',
-      desc: 'List your top three priorities for today.',
-      points: 25,
-      kind: 'write',
-      noteMin: 20,
-      noteHint: '1) …\n2) …\n3) …'
-    },
-    {
-      id: 'math',
-      title: 'Mental math',
-      desc: 'No calculator: what is 17 × 6?',
-      points: 10,
-      kind: 'answer',
-      answer: '102',
-      hint: 'Your answer'
-    },
-    {
-      id: 'geo',
-      title: 'Knowledge check',
-      desc: 'Which city is the capital of Japan?',
-      points: 15,
-      kind: 'answer',
-      answer: 'tokyo',
-      hint: 'Your answer'
+      noteMin: 15
     },
 
-    /* ---- external quests ---- */
     {
-      id: 'visit-a',
-      title: 'Visit Asnek',
-      desc: 'Opens asnek.netlify.app in a new tab. Stay there for 10 seconds, then come back and claim.',
+      id: "plan",
+      title: "Plan the day",
+      desc: "List your top three priorities for today.",
+      points: 25,
+      kind: "write",
+      noteMin: 20
+    },
+
+    {
+      id: "math",
+      title: "Mental math",
+      desc: "No calculator: what is 17 × 6?",
+      points: 10,
+      kind: "answer",
+      answer: "102"
+    },
+
+    {
+      id: "geo",
+      title: "Knowledge check",
+      desc: "Which city is the capital of Japan?",
+      points: 15,
+      kind: "answer",
+      answer: "tokyo"
+    },
+
+    {
+      id: "visit-a",
+      title: "Visit Asnek",
+      desc: "Open asnek.netlify.app and stay there for 10 seconds before returning.",
       points: 5,
-      kind: 'external',
-      url: 'https://asnek.netlify.app',
+      kind: "external",
+      url: "https://asnek.netlify.app",
       seconds: 10
     },
+
     {
-      id: 'visit-b',
-      title: 'Visit Nexla',
-      desc: 'Opens nexla.netlify.app in a new tab. The timer only runs while you are actually on that page.',
+      id: "visit-b",
+      title: "Visit Nexla",
+      desc: "Open nexla.netlify.app and stay there for 10 seconds before returning.",
       points: 5,
-      kind: 'external',
-      url: 'https://nexla.netlify.app',
+      kind: "external",
+      url: "https://nexla.netlify.app",
       seconds: 10
     }
+
   ];
 
-  var REWARDS = [
+
+  /* =====================================================
+     REWARDS
+  ===================================================== */
+
+  const REWARDS = [
+
     {
-      id: 'break',
-      icon: '☕',
-      title: '15-minute break',
-      desc: 'Starts a real 15-minute break timer. Take it without guilt — you paid for it.',
+      id: "break",
+      icon: "☕",
+      title: "15-minute break",
+      desc: "Starts a real 15-minute break timer.",
       cost: 30,
       repeat: true
     },
+
     {
-      id: 'teal',
-      icon: '🌊',
-      title: 'Teal accent',
-      desc: 'Switches the accent colour across the whole board to teal.',
+      id: "teal",
+      icon: "🌊",
+      title: "Teal accent",
+      desc: "Switch the board accent colour to teal.",
       cost: 60,
-      theme: 'teal'
+      theme: "teal"
     },
+
     {
-      id: 'plum',
-      icon: '🍇',
-      title: 'Plum accent',
-      desc: 'Switches the accent colour across the whole board to plum.',
+      id: "plum",
+      icon: "🍇",
+      title: "Plum accent",
+      desc: "Switch the board accent colour to plum.",
       cost: 60,
-      theme: 'plum'
+      theme: "plum"
     },
+
     {
-      id: 'badge',
-      icon: '★',
-      title: 'Gold star',
-      desc: 'A permanent star next to your level in the sidebar.',
+      id: "badge",
+      icon: "★",
+      title: "Gold star",
+      desc: "Add a permanent star beside your level.",
       cost: 120
     }
+
   ];
 
-  /* =========================================================
+
+  /* =====================================================
      STATE
-     ========================================================= */
+  ===================================================== */
 
   function dayKey() {
-    var d = new Date();
-    return d.getFullYear() + '-' +
-      String(d.getMonth() + 1).padStart(2, '0') + '-' +
-      String(d.getDate()).padStart(2, '0');
+
+    const d = new Date();
+
+    return [
+      d.getFullYear(),
+      String(d.getMonth() + 1).padStart(2, "0"),
+      String(d.getDate()).padStart(2, "0")
+    ].join("-");
+
   }
+
 
   function fresh() {
+
     return {
+
       points: 0,
+
       lifetime: 0,
+
       spent: 0,
+
       done: {},
+
       log: [],
+
       owned: [],
-      theme: 'default',
+
+      theme: "default",
+
       star: false,
+
       breakUntil: 0,
+
       day: dayKey()
+
     };
+
   }
 
-  function read() {
-    var s = fresh();
+
+  let S;
+
+
+  function load() {
+
     try {
-      var raw = localStorage.getItem(SAVE_KEY);
-      if (raw) {
-        var got = JSON.parse(raw);
-        Object.keys(s).forEach(function (k) {
-          if (got[k] !== undefined && got[k] !== null) s[k] = got[k];
-        });
-      }
-    } catch (e) { s = fresh(); }
 
-    if (s.day !== dayKey()) {
-      s.done = {};
-      s.day = dayKey();
-    }
-    return s;
-  }
+      S = JSON.parse(
+        localStorage.getItem(SAVE_KEY)
+      ) || fresh();
 
-  function write() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }
-    catch (e) { /* private mode — keep going in memory */ }
-  }
+    } catch {
 
-  var S = read();
-  var breakTimer = null;
+      S = fresh();
 
-  /* =========================================================
-     SMALL HELPERS
-     ========================================================= */
-
-  function $(id) { return document.getElementById(id); }
-
-  function esc(v) {
-    return String(v).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-
-  function clock(sec) {
-    var t = Math.max(0, Math.round(sec));
-    var m = Math.floor(t / 60);
-    var r = t % 60;
-    return m + ':' + String(r).padStart(2, '0');
-  }
-
-  function levelOf(lifetime) {
-    return Math.floor(lifetime / LEVEL_STEP) + 1;
-  }
-
-  function questById(id) {
-    for (var i = 0; i < QUESTS.length; i++) if (QUESTS[i].id === id) return QUESTS[i];
-    return null;
-  }
-
-  function pushLog(kind, title, points) {
-    S.log.unshift({ kind: kind, title: title, points: points, at: Date.now() });
-    S.log = S.log.slice(0, 50);
-  }
-
-  function say(text, tone) {
-    var el = document.createElement('div');
-    el.className = 'toast' + (tone ? ' ' + tone : '');
-    el.textContent = text;
-    $('toaster').appendChild(el);
-    setTimeout(function () {
-      el.classList.add('gone');
-      setTimeout(function () { el.remove(); }, 320);
-    }, 3000);
-  }
-
-  /* =========================================================
-     RENDER — SIDEBAR
-     ========================================================= */
-
-  function renderSide() {
-    $('points').textContent = S.points;
-    $('spent-total').textContent = S.spent;
-
-    var lvl = levelOf(S.lifetime);
-    $('level').textContent = lvl;
-    $('badge').hidden = !S.star;
-
-    var into = S.lifetime % LEVEL_STEP;
-    var pct = Math.round((into / LEVEL_STEP) * 100);
-    $('meter-fill').style.width = pct + '%';
-    $('meter-pct').textContent = pct + '%';
-    $('meter-left').textContent = (LEVEL_STEP - into) + ' to next';
-
-    var doneToday = Object.keys(S.done).length;
-    $('nav-board').textContent = doneToday + '/' + QUESTS.length;
-    $('nav-shop').textContent = S.owned.length + ' owned';
-    $('nav-log').textContent = S.log.length;
-
-    document.body.dataset.theme = S.theme || 'default';
-  }
-
-  /* =========================================================
-     RENDER — BOARD
-     ========================================================= */
-
-  function renderBoard() {
-    var host = $('board-list');
-    host.innerHTML = '';
-
-    QUESTS.forEach(function (q) {
-      var done = !!S.done[q.id];
-
-      var card = document.createElement('article');
-      card.className = 'row-card' + (done ? ' is-done' : '');
-      card.dataset.id = q.id;
-
-      var tag = '';
-      if (done) tag = '<span class="tag done">done</span>';
-      else if (q.kind === 'external') tag = '<span class="tag link">link</span>';
-
-      card.innerHTML =
-        '<div class="row-rail">' +
-          '<div class="tick" aria-hidden="true">✓</div>' +
-          '<div class="pts">+' + q.points + '</div>' +
-        '</div>' +
-        '<div class="row-body">' +
-          '<h3 class="row-title">' + esc(q.title) + tag + '</h3>' +
-          '<p class="row-desc">' + esc(q.desc) + '</p>' +
-          '<div class="row-controls"></div>' +
-        '</div>';
-
-      var slot = card.querySelector('.row-controls');
-
-      if (done) {
-        slot.innerHTML = '<p class="msg good">Claimed today — back tomorrow.</p>';
-      } else if (q.kind === 'timer') {
-        slot.appendChild(makeTimer(q));
-      } else if (q.kind === 'answer') {
-        slot.appendChild(makeAnswer(q));
-      } else if (q.kind === 'write') {
-        slot.appendChild(makeWrite(q));
-      } else if (q.kind === 'external') {
-        slot.appendChild(makeExternal(q));
-      }
-
-      host.appendChild(card);
-    });
-
-    var doneCount = Object.keys(S.done).length;
-    $('board-progress').textContent = doneCount + ' of ' + QUESTS.length + ' claimed today';
-  }
-
-  /* ---------- timer quest ---------- */
-
-  function makeTimer(q) {
-    var box = document.createElement('div');
-    box.className = 'ctl';
-
-    var noteHTML = q.needNote
-      ? '<textarea class="area" rows="2" maxlength="240" placeholder="' +
-          esc(q.noteHint || 'Write a short note…') + '"></textarea>'
-      : '';
-
-    box.innerHTML =
-      noteHTML +
-      '<div class="ctl-row">' +
-        '<button class="btn solid go" type="button">Start · ' + clock(q.seconds) + '</button>' +
-        '<div class="inline-timer" hidden>' +
-          '<div class="bar"><i></i></div>' +
-          '<span class="clock">' + clock(q.seconds) + '</span>' +
-          '<button class="btn plain stop" type="button">Cancel</button>' +
-        '</div>' +
-      '</div>';
-
-    var goBtn   = box.querySelector('.go');
-    var live    = box.querySelector('.inline-timer');
-    var bar     = box.querySelector('.bar > i');
-    var label   = box.querySelector('.clock');
-    var stopBtn = box.querySelector('.stop');
-    var note    = box.querySelector('.area');
-    var min     = q.noteMin || 10;
-
-    if (note) {
-      goBtn.disabled = true;
-      note.addEventListener('input', function () {
-        goBtn.disabled = note.value.trim().length < min;
-      });
     }
 
-    goBtn.addEventListener('click', function () {
-      if (note && note.value.trim().length < min) return;
 
-      var left = q.seconds;
-      var held = false;
-      var id;
+    if (S.day !== dayKey()) {
 
-      goBtn.hidden = true;
-      live.hidden = false;
-      paint();
+      S.done = {};
 
-      function paint() {
-        label.textContent = held ? 'held' : clock(left);
-        var done = ((q.seconds - left) / q.seconds) * 100;
-        bar.style.width = done.toFixed(1) + '%';
-        live.classList.toggle('held', held);
-      }
+      S.day = dayKey();
 
-      id = setInterval(function () {
-        if (held) return;
-        left -= 1;
-        if (left <= 0) {
-          left = 0;
-          paint();
-          clearInterval(id);
-          document.removeEventListener('visibilitychange', onHide);
-          finish(q.id);
-          return;
-        }
-        paint();
-      }, 1000);
+      save();
 
-      function onHide() {
-        held = document.hidden;
-        paint();
-      }
+    }
 
-      document.addEventListener('visibilitychange', onHide);
-
-      stopBtn.addEventListener('click', function () {
-        clearInterval(id);
-        document.removeEventListener('visibilitychange', onHide);
-        live.hidden = true;
-        goBtn.hidden = false;
-        goBtn.textContent = 'Restart · ' + clock(q.seconds);
-        say('Timer cancelled — nothing credited.', 'warn');
-      });
-    });
-
-    return box;
   }
 
-  /* ---------- answer quest ---------- */
 
-  function makeAnswer(q) {
-    var box = document.createElement('div');
-    box.className = 'ctl';
-    box.innerHTML =
-      '<div class="ctl-row">' +
-        '<input class="field" type="text" autocomplete="off" autocapitalize="off" ' +
-          'spellcheck="false" placeholder="' + esc(q.hint || 'Your answer') + '" ' +
-          'style="max-width:260px" aria-label="Your answer" />' +
-        '<button class="btn solid send" type="button">Submit</button>' +
-      '</div>' +
-      '<p class="msg bad" hidden>Not correct — try again. No points until it is right.</p>';
+  function save() {
 
-    var input = box.querySelector('input');
-    var btn   = box.querySelector('.send');
-    var warn  = box.querySelector('.msg');
+    localStorage.setItem(
+      SAVE_KEY,
+      JSON.stringify(S)
+    );
 
-    function send() {
-      var v = input.value.trim().toLowerCase();
-      if (!v) { input.focus(); return; }
-
-      if (v === String(q.answer).toLowerCase()) {
-        finish(q.id);
-      } else {
-        warn.hidden = false;
-        box.classList.remove('wobble');
-        void box.offsetWidth;
-        box.classList.add('wobble');
-        input.select();
-      }
-    }
-
-    btn.addEventListener('click', send);
-    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') send(); });
-    input.focus();
-
-    return box;
   }
 
-  /* ---------- write quest ---------- */
 
-  function makeWrite(q) {
-    var min = q.noteMin || 10;
+  /* =====================================================
+     HELPERS
+  ===================================================== */
 
-    var box = document.createElement('div');
-    box.className = 'ctl';
-    box.innerHTML =
-      '<textarea class="area" rows="3" maxlength="400" placeholder="' +
-        esc(q.noteHint || 'Write your answer…') + '"></textarea>' +
-      '<div class="ctl-row">' +
-        '<button class="btn solid" type="button" disabled>Save &amp; claim ' + q.points + '</button>' +
-        '<span class="msg note tally"></span>' +
-      '</div>';
+  function escapeHTML(value) {
 
-    var note = box.querySelector('.area');
-    var btn  = box.querySelector('button');
-    var tally = box.querySelector('.tally');
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
 
-    function upd() {
-      var len = note.value.trim().length;
-      btn.disabled = len < min;
-      tally.textContent = len + ' / ' + min + ' characters';
-    }
-    upd();
-
-    note.addEventListener('input', upd);
-    btn.addEventListener('click', function () {
-      if (note.value.trim().length < min) return;
-      finish(q.id);
-    });
-
-    return box;
   }
 
-  /* ---------- external quest ---------- */
 
-  function makeExternal(q) {
-    var need = q.seconds * 1000;
-    var banked = 0;
-    var awayAt = null;
-    var opened = false;
-    var cleared = false;
+  function toast(message) {
 
-    var box = document.createElement('div');
-    box.className = 'ctl';
-    box.innerHTML =
-      '<div class="ctl-row">' +
-        '<button class="btn solid open" type="button">Open link ↗</button>' +
-        '<button class="btn solid claim" type="button" disabled>Claim ' + q.points + '</button>' +
-      '</div>' +
-      '<p class="msg note status">Opens in a new tab. The timer runs only while that page is open.</p>';
+    const el = document.getElementById("toast");
 
-    var openBtn  = box.querySelector('.open');
-    var claimBtn = box.querySelector('.claim');
-    var status   = box.querySelector('.status');
+    el.textContent = message;
 
-    function left() {
-      return Math.max(0, Math.ceil((need - banked) / 1000));
-    }
+    el.classList.add("show");
 
-    function clear() {
-      cleared = true;
-      document.removeEventListener('visibilitychange', watch);
-      claimBtn.disabled = false;
-      openBtn.disabled = true;
-      openBtn.textContent = 'Visited ✓';
-      status.textContent = 'Visit verified. Claim your points.';
-      status.className = 'msg good status';
-    }
+    clearTimeout(toast.timer);
 
-    function watch() {
-      if (document.hidden) {
-        awayAt = Date.now();
-      } else if (awayAt !== null) {
-        banked += Date.now() - awayAt;
-        awayAt = null;
+    toast.timer = setTimeout(() => {
 
-        if (banked >= need) {
-          clear();
-        } else if (opened && !cleared) {
-          status.textContent = 'Paused — ' + left() + 's still needed. Return to that page.';
-          status.className = 'msg warn status';
-        }
-      }
-    }
+      el.classList.remove("show");
 
-    openBtn.addEventListener('click', function () {
-      var w = window.open(q.url, '_blank', 'noopener');
-      if (!w) {
-        status.textContent = 'Pop-up blocked. Allow pop-ups for this page and try again.';
-        status.className = 'msg bad status';
-        return;
-      }
-      opened = true;
-      awayAt = Date.now();
-      openBtn.disabled = true;
-      openBtn.textContent = 'Link opened';
-      status.textContent = 'Counting time on the other page…';
-      status.className = 'msg note status';
-      document.addEventListener('visibilitychange', watch);
-    });
+    }, 2400);
 
-    claimBtn.addEventListener('click', function () {
-      if (cleared) finish(q.id);
-    });
-
-    return box;
   }
 
-  /* =========================================================
-     FINISH A QUEST
-     ========================================================= */
 
   function finish(id) {
-    var q = questById(id);
-    if (!q || S.done[id]) return;
 
-    var before = levelOf(S.lifetime);
+    if (S.done[id]) {
 
-    S.done[id] = Date.now();
-    S.points += q.points;
-    S.lifetime += q.points;
-    pushLog('in', q.title, q.points);
+      return;
 
-    write();
-    renderSide();
-    renderBoard();
-    renderShop();
-    renderLog();
-
-    say('+' + q.points + ' pts · ' + q.title, 'good');
-
-    var after = levelOf(S.lifetime);
-    if (after > before) {
-      setTimeout(function () { say('Level ' + after + ' reached', 'good'); }, 420);
     }
+
+
+    const q = QUESTS.find(
+      x => x.id === id
+    );
+
+    if (!q) return;
+
+
+    S.done[id] = true;
+
+    S.points += q.points;
+
+    S.lifetime += q.points;
+
+
+    S.log.unshift({
+
+      type: "quest",
+
+      title: q.title,
+
+      points: q.points,
+
+      time: Date.now()
+
+    });
+
+
+    save();
+
+    render();
+
+    toast(
+      "+" + q.points + " points — " + q.title
+    );
+
   }
 
-  /* =========================================================
-     RENDER — SHOP
-     ========================================================= */
 
-  function renderShop() {
-    var host = $('shop-list');
-    host.innerHTML = '';
+  /* =====================================================
+     TIMER QUEST
+  ===================================================== */
 
-    REWARDS.forEach(function (r) {
-      var owned = !r.repeat && S.owned.indexOf(r.id) !== -1;
-      var canAfford = S.points >= r.cost;
+  function makeTimer(q) {
 
-      var card = document.createElement('article');
-      card.className = 'reward-card' +
-        (owned ? ' is-owned' : '') +
-        (!owned && !canAfford ? ' is-locked' : '');
+    const box = document.createElement("div");
 
-      var btnLabel;
-      if (owned) btnLabel = 'Unlocked';
-      else if (canAfford) btnLabel = 'Redeem';
-      else btnLabel = 'Need ' + (r.cost - S.points) + ' more';
+    box.className = "controls";
 
-      card.innerHTML =
-        '<div class="reward-icon" aria-hidden="true">' + esc(r.icon) + '</div>' +
-        '<div class="reward-info">' +
-          '<h3>' + esc(r.title) + '</h3>' +
-          '<p>' + esc(r.desc) + '</p>' +
-        '</div>' +
-        '<div class="reward-cost">' + r.cost + ' pts</div>' +
-        '<button class="btn ' + (owned ? 'line' : 'solid') + '" type="button"' +
-          (owned || !canAfford ? ' disabled' : '') + '>' + esc(btnLabel) + '</button>';
+    box.innerHTML = `
 
-      var btn = card.querySelector('button');
-      if (!owned && canAfford) {
-        btn.addEventListener('click', function () { buy(r); });
+      <div class="ctl-row">
+
+        <button
+          class="btn solid start"
+          type="button">
+
+          Start ${q.seconds}s
+
+        </button>
+
+        <button
+          class="btn claim"
+          type="button"
+          disabled>
+
+          Claim ${q.points}
+
+        </button>
+
+      </div>
+
+      <p class="msg note status">
+        Timer must complete before claiming.
+      </p>
+
+    `;
+
+
+    const start = box.querySelector(".start");
+
+    const claim = box.querySelector(".claim");
+
+    const status = box.querySelector(".status");
+
+
+    let timer = null;
+
+    let end = 0;
+
+
+    start.addEventListener(
+      "click",
+      () => {
+
+        start.disabled = true;
+
+        end =
+          Date.now() +
+          q.seconds * 1000;
+
+
+        status.textContent =
+          "Running…";
+
+
+        timer = setInterval(
+          () => {
+
+            const left =
+              Math.max(
+                0,
+                Math.ceil(
+                  (end - Date.now()) / 1000
+                )
+              );
+
+
+            status.textContent =
+              left > 0
+                ? "Time remaining: " + left + "s"
+                : "Complete ✓";
+
+
+            if (left <= 0) {
+
+              clearInterval(timer);
+
+              claim.disabled = false;
+
+              status.className =
+                "msg good status";
+
+            }
+
+          },
+          250
+        );
+
+      }
+    );
+
+
+    claim.addEventListener(
+      "click",
+      () => finish(q.id)
+    );
+
+
+    return box;
+
+  }
+
+
+  /* =====================================================
+     ANSWER QUEST
+  ===================================================== */
+
+  function makeAnswer(q) {
+
+    const box = document.createElement("div");
+
+    box.className = "controls";
+
+    box.innerHTML = `
+
+      <input
+        class="input answer"
+        type="text"
+        placeholder="Your answer">
+
+      <div class="ctl-row" style="margin-top:8px">
+
+        <button
+          class="btn solid check"
+          type="button">
+
+          Check answer
+
+        </button>
+
+      </div>
+
+      <p class="msg status"></p>
+
+    `;
+
+
+    const input =
+      box.querySelector(".answer");
+
+    const check =
+      box.querySelector(".check");
+
+    const status =
+      box.querySelector(".status");
+
+
+    check.addEventListener(
+      "click",
+      () => {
+
+        const value =
+          input.value
+            .trim()
+            .toLowerCase();
+
+
+        if (value === q.answer.toLowerCase()) {
+
+          status.textContent =
+            "Correct ✓";
+
+          status.className =
+            "msg good status";
+
+          check.disabled = true;
+
+          input.disabled = true;
+
+          finish(q.id);
+
+        } else {
+
+          status.textContent =
+            "Not quite. Try again.";
+
+          status.className =
+            "msg bad status";
+
+        }
+
+      }
+    );
+
+
+    return box;
+
+  }
+
+
+  /* =====================================================
+     WRITE QUEST
+  ===================================================== */
+
+  function makeWrite(q) {
+
+    const box = document.createElement("div");
+
+    box.className = "controls";
+
+    box.innerHTML = `
+
+      <textarea
+        class="note-input"
+        placeholder="Write your response..."></textarea>
+
+      <div class="ctl-row" style="margin-top:8px">
+
+        <button
+          class="btn solid submit"
+          type="button">
+
+          Submit
+
+        </button>
+
+      </div>
+
+      <p class="msg note status"></p>
+
+    `;
+
+
+    const textarea =
+      box.querySelector(".note-input");
+
+    const submit =
+      box.querySelector(".submit");
+
+    const status =
+      box.querySelector(".status");
+
+
+    submit.addEventListener(
+      "click",
+      () => {
+
+        const text =
+          textarea.value.trim();
+
+
+        if (text.length < q.noteMin) {
+
+          status.textContent =
+            "Write at least " +
+            q.noteMin +
+            " characters.";
+
+          status.className =
+            "msg warn status";
+
+          return;
+
+        }
+
+
+        finish(q.id);
+
+        textarea.disabled = true;
+
+        submit.disabled = true;
+
+        status.textContent =
+          "Submitted ✓";
+
+        status.className =
+          "msg good status";
+
+      }
+    );
+
+
+    return box;
+
+  }
+
+
+  /* =====================================================
+     EXTERNAL QUEST
+  ===================================================== */
+
+  function makeExternal(q) {
+
+    const need =
+      q.seconds * 1000;
+
+
+    let banked = 0;
+
+    let awayAt = null;
+
+    let opened = false;
+
+    let cleared = false;
+
+
+    const box =
+      document.createElement("div");
+
+
+    box.className =
+      "controls";
+
+
+    box.innerHTML = `
+
+      <div class="ctl-row">
+
+        <button
+          class="btn solid open"
+          type="button">
+
+          Open link ↗
+
+        </button>
+
+        <button
+          class="btn solid claim"
+          type="button"
+          disabled>
+
+          Claim ${q.points}
+
+        </button>
+
+      </div>
+
+      <p class="msg note status">
+
+        Opens in a new tab. Return after
+        ${q.seconds} seconds.
+
+      </p>
+
+    `;
+
+
+    const openBtn =
+      box.querySelector(".open");
+
+
+    const claimBtn =
+      box.querySelector(".claim");
+
+
+    const status =
+      box.querySelector(".status");
+
+
+    function left() {
+
+      return Math.max(
+        0,
+        Math.ceil(
+          (need - banked) / 1000
+        )
+      );
+
+    }
+
+
+    function clear() {
+
+      cleared = true;
+
+      document.removeEventListener(
+        "visibilitychange",
+        watch
+      );
+
+
+      claimBtn.disabled = false;
+
+      openBtn.disabled = true;
+
+      openBtn.textContent =
+        "Visited ✓";
+
+
+      status.textContent =
+        "Visit timer completed. Claim your points.";
+
+      status.className =
+        "msg good status";
+
+    }
+
+
+    function watch() {
+
+      if (document.hidden) {
+
+        awayAt = Date.now();
+
       }
 
-      host.appendChild(card);
-    });
+      else if (awayAt !== null) {
+
+        banked +=
+          Date.now() - awayAt;
+
+        awayAt = null;
+
+
+        if (banked >= need) {
+
+          clear();
+
+        }
+
+        else if (opened && !cleared) {
+
+          status.textContent =
+            "Paused — " +
+            left() +
+            "s still needed.";
+
+          status.className =
+            "msg warn status";
+
+        }
+
+      }
+
+    }
+
+
+    openBtn.addEventListener(
+      "click",
+      () => {
+
+        const w =
+          window.open(
+            q.url,
+            "_blank",
+            "noopener"
+          );
+
+
+        if (!w) {
+
+          status.textContent =
+            "Pop-up blocked. Allow pop-ups and try again.";
+
+          status.className =
+            "msg bad status";
+
+          return;
+
+        }
+
+
+        opened = true;
+
+        awayAt = Date.now();
+
+
+        openBtn.disabled = true;
+
+        openBtn.textContent =
+          "Link opened";
+
+
+        status.textContent =
+          "Waiting for the visit timer…";
+
+        status.className =
+          "msg note status";
+
+
+        document.addEventListener(
+          "visibilitychange",
+          watch
+        );
+
+      }
+    );
+
+
+    claimBtn.addEventListener(
+      "click",
+      () => {
+
+        if (cleared) {
+
+          finish(q.id);
+
+        }
+
+      }
+    );
+
+
+    return box;
+
   }
+
+
+  /* =====================================================
+     QUEST RENDERING
+  ===================================================== */
+
+  function renderQuests() {
+
+    const list =
+      document.getElementById(
+        "questList"
+      );
+
+
+    list.innerHTML = "";
+
+
+    QUESTS.forEach(
+      (q, index) => {
+
+        const card =
+          document.createElement("article");
+
+
+        card.className =
+          "quest" +
+          (S.done[q.id]
+            ? " done"
+            : "");
+
+
+        let controls;
+
+
+        if (S.done[q.id]) {
+
+          controls =
+            `<p class="msg good">
+              Completed ✓
+            </p>`;
+
+        }
+
+        else {
+
+          if (q.kind === "timer") {
+
+            controls =
+              makeTimer(q);
+
+          }
+
+          else if (q.kind === "answer") {
+
+            controls =
+              makeAnswer(q);
+
+          }
+
+          else if (q.kind === "write") {
+
+            controls =
+              makeWrite(q);
+
+          }
+
+          else if (q.kind === "external") {
+
+            controls =
+              makeExternal(q);
+
+          }
+
+        }
+
+
+        card.innerHTML = `
+
+          <div class="quest-top">
+
+            <div>
+
+              <h3>
+                ${escapeHTML(q.title)}
+              </h3>
+
+              <p>
+                ${escapeHTML(q.desc)}
+              </p>
+
+            </div>
+
+            <div class="reward-points">
+              +${q.points}
+            </div>
+
+          </div>
+
+        `;
+
+
+        const holder =
+          document.createElement("div");
+
+
+        holder.className =
+          "controls";
+
+
+        if (typeof controls === "string") {
+
+          holder.innerHTML =
+            controls;
+
+        }
+
+        else {
+
+          holder.appendChild(
+            controls
+          );
+
+        }
+
+
+        card.appendChild(holder);
+
+        list.appendChild(card);
+
+      }
+    );
+
+  }
+
+
+  /* =====================================================
+     REWARDS
+  ===================================================== */
 
   function buy(r) {
-    if (S.points < r.cost) return;
-    if (!r.repeat && S.owned.indexOf(r.id) !== -1) return;
+
+    if (S.points < r.cost) {
+
+      toast("Not enough points.");
+
+      return;
+
+    }
+
 
     S.points -= r.cost;
+
     S.spent += r.cost;
 
-    if (!r.repeat) S.owned.push(r.id);
-    pushLog('out', r.title, -r.cost);
 
-    if (r.theme) S.theme = r.theme;
-    if (r.id === 'badge') S.star = true;
-    if (r.id === 'break') S.breakUntil = Date.now() + 15 * 60 * 1000;
+    if (r.repeat) {
 
-    write();
-    renderSide();
-    renderShop();
-    renderLog();
-    renderBreak();
+      S.log.unshift({
 
-    say('Redeemed · ' + r.title, 'good');
+        type: "reward",
+
+        title: r.title,
+
+        points: -r.cost,
+
+        time: Date.now()
+
+      });
+
+
+      S.breakUntil =
+        Date.now() +
+        15 * 60 * 1000;
+
+      save();
+
+      render();
+
+      toast("15-minute break started.");
+
+      return;
+
+    }
+
+
+    if (!S.owned.includes(r.id)) {
+
+      S.owned.push(r.id);
+
+    }
+
+
+    if (r.theme) {
+
+      S.theme =
+        r.theme;
+
+    }
+
+
+    if (r.id === "badge") {
+
+      S.star = true;
+
+    }
+
+
+    S.log.unshift({
+
+      type: "reward",
+
+      title: r.title,
+
+      points: -r.cost,
+
+      time: Date.now()
+
+    });
+
+
+    save();
+
+    render();
+
+    toast(
+      "Unlocked: " + r.title
+    );
+
   }
 
-  /* =========================================================
-     RENDER — LOG
-     ========================================================= */
 
-  function renderLog() {
-    var host = $('log-list');
+  function renderRewards() {
+
+    const list =
+      document.getElementById(
+        "rewardList"
+      );
+
+
+    list.innerHTML = "";
+
+
+    REWARDS.forEach(
+      r => {
+
+        const owned =
+          S.owned.includes(r.id);
+
+
+        const card =
+          document.createElement("article");
+
+
+        card.className =
+          "reward";
+
+
+        card.innerHTML = `
+
+          <div class="reward-icon">
+            ${r.icon}
+          </div>
+
+          <h3>
+            ${escapeHTML(r.title)}
+          </h3>
+
+          <p>
+            ${escapeHTML(r.desc)}
+          </p>
+
+          <div class="reward-bottom">
+
+            <div class="cost">
+              ${r.cost} pts
+            </div>
+
+            <button
+              class="btn solid buy"
+              ${(!r.repeat && owned) ? "disabled" : ""}
+              type="button">
+
+              ${
+                (!r.repeat && owned)
+                  ? "Owned ✓"
+                  : "Unlock"
+              }
+
+            </button>
+
+          </div>
+
+        `;
+
+
+        card.querySelector(
+          ".buy"
+        ).addEventListener(
+          "click",
+          () => buy(r)
+        );
+
+
+        list.appendChild(card);
+
+      }
+    );
+
+  }
+
+
+  /* =====================================================
+     HISTORY
+  ===================================================== */
+
+  function renderHistory() {
+
+    const list =
+      document.getElementById(
+        "historyList"
+      );
+
+
+    list.innerHTML = "";
+
 
     if (!S.log.length) {
-      host.innerHTML = '<div class="blank">Nothing logged yet. Finish a quest to start.</div>';
+
+      list.innerHTML = `
+
+        <div class="history-item">
+
+          <span>
+            No activity yet.
+          </span>
+
+        </div>
+
+      `;
+
       return;
+
     }
 
-    host.innerHTML = S.log.map(function (e) {
-      var isIn = e.points > 0;
-      var sign = isIn ? '+' : '';
-      return '<div class="log-item">' +
-        '<span class="log-mark ' + (isIn ? 'in' : 'out') + '">' + (isIn ? '▲' : '▼') + '</span>' +
-        '<span class="log-name">' + esc(e.title) + '</span>' +
-        '<span class="log-amt ' + (isIn ? 'in' : 'out') + '">' + sign + e.points + '</span>' +
-        '<span class="log-when">' + new Date(e.at).toLocaleString() + '</span>' +
-      '</div>';
-    }).join('');
-  }
 
-  /* =========================================================
-     BREAK TIMER
-     ========================================================= */
+    S.log.forEach(
+      item => {
 
-  function renderBreak() {
-    var strip = $('break-strip');
-    var left = S.breakUntil - Date.now();
+        const row =
+          document.createElement("div");
 
-    if (left > 0) {
-      strip.hidden = false;
-      $('break-clock').textContent = clock(Math.ceil(left / 1000));
 
-      if (!breakTimer) {
-        breakTimer = setInterval(function () {
-          var l = S.breakUntil - Date.now();
-          if (l <= 0) { stopBreak(false); return; }
-          $('break-clock').textContent = clock(Math.ceil(l / 1000));
-        }, 1000);
+        row.className =
+          "history-item";
+
+
+        const date =
+          new Date(item.time);
+
+
+        row.innerHTML = `
+
+          <div>
+
+            <strong>
+              ${escapeHTML(item.title)}
+            </strong>
+
+            <br>
+
+            <small>
+              ${date.toLocaleString()}
+            </small>
+
+          </div>
+
+          <strong class="${
+            item.points >= 0
+              ? "good"
+              : "bad"
+          }">
+
+            ${
+              item.points >= 0
+                ? "+"
+                : ""
+            }${item.points}
+
+          </strong>
+
+        `;
+
+
+        list.appendChild(row);
+
       }
-    } else {
-      strip.hidden = true;
+    );
+
+  }
+
+
+  /* =====================================================
+     SIDEBAR / PROFILE
+  ===================================================== */
+
+  function renderProfile() {
+
+    document.getElementById(
+      "points"
+    ).textContent =
+      S.points;
+
+
+    document.getElementById(
+      "lifetime"
+    ).textContent =
+      S.lifetime;
+
+
+    document.getElementById(
+      "spent"
+    ).textContent =
+      S.spent;
+
+
+    const level =
+      Math.floor(
+        S.lifetime / LEVEL_STEP
+      ) + 1;
+
+
+    document.getElementById(
+      "level"
+    ).textContent =
+      level;
+
+
+    document.getElementById(
+      "star"
+    ).textContent =
+      S.star ? " ★" : "";
+
+
+    const progress =
+      S.lifetime %
+      LEVEL_STEP;
+
+
+    document.getElementById(
+      "progress"
+    ).style.width =
+      progress + "%";
+
+
+    document.body.classList.remove(
+      "teal",
+      "plum"
+    );
+
+
+    if (
+      S.theme === "teal" ||
+      S.theme === "plum"
+    ) {
+
+      document.body.classList.add(
+        S.theme
+      );
+
     }
+
   }
 
-  function stopBreak(manual) {
-    var was = S.breakUntil > 0;
-    S.breakUntil = 0;
 
-    if (breakTimer) { clearInterval(breakTimer); breakTimer = null; }
-    write();
-    $('break-strip').hidden = true;
+  /* =====================================================
+     BREAK TIMER
+  ===================================================== */
 
-    if (!was) return;
-    say(manual ? 'Break ended early.' : 'Break over.', manual ? 'warn' : 'good');
+  function updateBreak() {
+
+    const box =
+      document.getElementById(
+        "breakTimer"
+      );
+
+
+    if (!S.breakUntil) {
+
+      box.classList.remove("show");
+
+      return;
+
+    }
+
+
+    const left =
+      Math.max(
+        0,
+        S.breakUntil -
+        Date.now()
+      );
+
+
+    if (left <= 0) {
+
+      S.breakUntil = 0;
+
+      save();
+
+      box.classList.remove("show");
+
+      return;
+
+    }
+
+
+    box.classList.add("show");
+
+
+    const seconds =
+      Math.ceil(left / 1000);
+
+
+    const mins =
+      Math.floor(seconds / 60);
+
+
+    const secs =
+      seconds % 60;
+
+
+    document.getElementById(
+      "breakTime"
+    ).textContent =
+
+      String(mins).padStart(2, "0") +
+      ":" +
+      String(secs).padStart(2, "0");
+
   }
 
-  /* =========================================================
+
+  /* =====================================================
      NAVIGATION
-     ========================================================= */
+  ===================================================== */
 
-  var views = ['board', 'shop', 'log'];
+  function showPage(page) {
 
-  document.querySelectorAll('.nav-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var target = btn.dataset.view;
+    document
+      .querySelectorAll(".section")
+      .forEach(
+        section =>
+          section.classList.remove(
+            "active"
+          )
+      );
 
-      document.querySelectorAll('.nav-btn').forEach(function (b) {
-        b.setAttribute('aria-current', b === btn ? 'true' : 'false');
-      });
 
-      views.forEach(function (v) {
-        $('view-' + v).hidden = (v !== target);
-      });
-    });
-  });
+    document
+      .querySelectorAll(".nav-btn")
+      .forEach(
+        btn =>
+          btn.classList.remove(
+            "active"
+          )
+      );
 
-  /* =========================================================
-     RESET
-     ========================================================= */
 
-  $('wipe').addEventListener('click', function () {
-    if (!window.confirm('Delete all points, unlocks and history? This cannot be undone.')) return;
+    const section =
+      document.getElementById(
+        page + "Page"
+      );
 
-    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
 
-    S = fresh();
-    if (breakTimer) { clearInterval(breakTimer); breakTimer = null; }
+    if (section) {
 
-    write();
-    renderSide();
-    renderBoard();
-    renderShop();
-    renderLog();
-    renderBreak();
+      section.classList.add(
+        "active"
+      );
 
-    say('Progress wiped.', 'warn');
-  });
-
-  $('break-stop').addEventListener('click', function () { stopBreak(true); });
-
-  /* =========================================================
-     MIDNIGHT ROLLOVER
-     ========================================================= */
-
-  setInterval(function () {
-    if (S.day !== dayKey()) {
-      S.day = dayKey();
-      S.done = {};
-      write();
-      renderBoard();
-      renderSide();
-      say('New day — quests reset.', 'good');
     }
-  }, 30000);
 
-  /* =========================================================
-     BOOT
-     ========================================================= */
 
-  renderSide();
-  renderBoard();
-  renderShop();
-  renderLog();
-  renderBreak();
+    const button =
+      document.querySelector(
+        `[data-page="${page}"]`
+      );
 
-})();
+
+    if (button) {
+
+      button.classList.add(
+        "active"
+      );
+
+    }
+
+
+    if (page === "quests") {
+
+      document.getElementById(
+        "pageTitle"
+      ).textContent =
+        "Quest Board";
+
+
+      document.getElementById(
+        "pageDescription"
+      ).textContent =
+        "Complete simple tasks and collect points.";
+
+    }
+
+
+    if (page === "rewards") {
+
+      document.getElementById(
+        "pageTitle"
+      ).textContent =
+        "Rewards";
+
+
+      document.getElementById(
+        "pageDescription"
+      ).textContent =
+        "Spend your points on useful rewards.";
+
+    }
+
+
+    if (page === "history") {
+
+      document.getElementById(
+        "pageTitle"
+      ).textContent =
+        "History";
+
+
+      document.getElementById(
+        "pageDescription"
+      ).textContent =
+        "See your recent activity.";
+
+    }
+
+  }
+
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(
+      btn => {
+
+        btn.addEventListener(
+          "click",
+          () => {
+
+            showPage(
+              btn.dataset.page
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     RESET
+  ===================================================== */
+
+  document
+    .getElementById("resetBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        const ok =
+          confirm(
+            "Reset all Quest Board progress?"
+          );
+
+
+        if (!ok) return;
+
+
+        localStorage.removeItem(
+          SAVE_KEY
+        );
+
+
+        S = fresh();
+
+        render();
+
+        toast(
+          "Progress reset."
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     RENDER EVERYTHING
+  ===================================================== */
+
+  function render() {
+
+    renderProfile();
+
+    renderQuests();
+
+    renderRewards();
+
+    renderHistory();
+
+    updateBreak();
+
+  }
+
+
+  /* =====================================================
+     START
+  ===================================================== */
+
+  load();
+
+  render();
+
+
+  setInterval(
+    updateBreak,
+    1000
+  );
+
 </script>
+
 </body>
 </html>
