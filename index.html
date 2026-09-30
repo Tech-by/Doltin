@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Quest Board — Tasks & Rewards</title>
 
@@ -240,52 +239,6 @@
     .reset-btn:hover {
       color: var(--text);
       border-color: rgba(255,255,255,.18);
-    }
-
-    /* =========================
-       ADS
-    ========================= */
-
-    .ad-wrap {
-      width: 100%;
-      margin: 20px 0;
-      display: flex;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .ad-inner {
-      width: 100%;
-      text-align: center;
-    }
-
-    .ad-label {
-      color: var(--muted);
-      opacity: .55;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      margin-bottom: 6px;
-    }
-
-    .ad-box {
-      width: 100%;
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      border-radius: 12px;
-    }
-
-    .ad-box.mobile {
-      min-height: 100px;
-    }
-
-    @media (max-width: 600px) {
-      .ad-box {
-        min-height: 100px;
-      }
     }
 
     /* =========================
@@ -553,6 +506,7 @@
     ========================= */
 
     @media (max-width: 800px) {
+
       .app {
         grid-template-columns: 1fr;
       }
@@ -586,6 +540,7 @@
     }
 
     @media (max-width: 480px) {
+
       .topbar {
         flex-direction: column;
       }
@@ -607,9 +562,7 @@
 
 <div class="app">
 
-  <!-- =========================
-       SIDEBAR
-  ========================= -->
+  <!-- SIDEBAR -->
 
   <aside class="sidebar">
 
@@ -654,16 +607,28 @@
 
     <nav>
 
-      <button class="nav-btn active" data-page="quests">
+      <button
+        class="nav-btn active"
+        data-page="quests">
+
         Quest board
+
       </button>
 
-      <button class="nav-btn" data-page="rewards">
+      <button
+        class="nav-btn"
+        data-page="rewards">
+
         Rewards
+
       </button>
 
-      <button class="nav-btn" data-page="history">
+      <button
+        class="nav-btn"
+        data-page="history">
+
         History
+
       </button>
 
     </nav>
@@ -671,15 +636,14 @@
   </aside>
 
 
-  <!-- =========================
-       MAIN
-  ========================= -->
+  <!-- MAIN -->
 
   <main>
 
     <div class="topbar">
 
       <div>
+
         <h1 id="pageTitle">
           Quest Board
         </h1>
@@ -687,49 +651,25 @@
         <p id="pageDescription">
           Complete simple tasks and collect points.
         </p>
+
       </div>
 
       <button
         class="reset-btn"
         id="resetBtn">
+
         Reset
+
       </button>
 
     </div>
 
 
-    <!-- =====================================================
-         QUEST PAGE
-    ====================================================== -->
+    <!-- QUEST PAGE -->
 
     <section
       class="section active"
       id="questsPage">
-
-      <!-- AD #1
-           Paste your HilltopAds zone code inside .ad-box
-      -->
-
-      <div class="ad-wrap">
-
-        <div class="ad-inner">
-
-          <div class="ad-label">
-            Advertisement
-          </div>
-
-          <div class="ad-box">
-
-            <!--
-              PASTE HILLTOPADS ZONE #1 HERE
-            -->
-
-          </div>
-
-        </div>
-
-      </div>
-
 
       <h2 class="section-title">
         Today's quests
@@ -740,35 +680,10 @@
         id="questList">
       </div>
 
-
-      <!-- AD #2 -->
-
-      <div class="ad-wrap">
-
-        <div class="ad-inner">
-
-          <div class="ad-label">
-            Advertisement
-          </div>
-
-          <div class="ad-box">
-
-            <!--
-              PASTE HILLTOPADS ZONE #2 HERE
-            -->
-
-          </div>
-
-        </div>
-
-      </div>
-
     </section>
 
 
-    <!-- =====================================================
-         REWARDS PAGE
-    ====================================================== -->
+    <!-- REWARDS PAGE -->
 
     <section
       class="section"
@@ -783,35 +698,10 @@
         id="rewardList">
       </div>
 
-
-      <!-- AD #3 -->
-
-      <div class="ad-wrap">
-
-        <div class="ad-inner">
-
-          <div class="ad-label">
-            Advertisement
-          </div>
-
-          <div class="ad-box mobile">
-
-            <!--
-              PASTE HILLTOPADS ZONE #3 HERE
-            -->
-
-          </div>
-
-        </div>
-
-      </div>
-
     </section>
 
 
-    <!-- =====================================================
-         HISTORY PAGE
-    ====================================================== -->
+    <!-- HISTORY PAGE -->
 
     <section
       class="section"
@@ -848,6 +738,7 @@
   id="breakTimer">
 
   ☕ Break:
+
   <strong id="breakTime">
     15:00
   </strong>
@@ -1008,23 +899,14 @@
     return {
 
       points: 0,
-
       lifetime: 0,
-
       spent: 0,
-
       done: {},
-
       log: [],
-
       owned: [],
-
       theme: "default",
-
       star: false,
-
       breakUntil: 0,
-
       day: dayKey()
 
     };
@@ -1039,9 +921,10 @@
 
     try {
 
-      S = JSON.parse(
-        localStorage.getItem(SAVE_KEY)
-      ) || fresh();
+      S =
+        JSON.parse(
+          localStorage.getItem(SAVE_KEY)
+        ) || fresh();
 
     } catch {
 
@@ -1091,19 +974,25 @@
 
   function toast(message) {
 
-    const el = document.getElementById("toast");
+    const el =
+      document.getElementById("toast");
 
-    el.textContent = message;
+    el.textContent =
+      message;
 
     el.classList.add("show");
 
     clearTimeout(toast.timer);
 
-    toast.timer = setTimeout(() => {
+    toast.timer =
+      setTimeout(
+        () => {
 
-      el.classList.remove("show");
+          el.classList.remove("show");
 
-    }, 2400);
+        },
+        2400
+      );
 
   }
 
@@ -1111,17 +1000,19 @@
   function finish(id) {
 
     if (S.done[id]) {
-
       return;
-
     }
 
 
-    const q = QUESTS.find(
-      x => x.id === id
-    );
+    const q =
+      QUESTS.find(
+        x => x.id === id
+      );
 
-    if (!q) return;
+
+    if (!q) {
+      return;
+    }
 
 
     S.done[id] = true;
@@ -1134,11 +1025,8 @@
     S.log.unshift({
 
       type: "quest",
-
       title: q.title,
-
       points: q.points,
-
       time: Date.now()
 
     });
@@ -1149,7 +1037,10 @@
     render();
 
     toast(
-      "+" + q.points + " points — " + q.title
+      "+" +
+      q.points +
+      " points — " +
+      q.title
     );
 
   }
@@ -1161,9 +1052,12 @@
 
   function makeTimer(q) {
 
-    const box = document.createElement("div");
+    const box =
+      document.createElement("div");
 
-    box.className = "controls";
+    box.className =
+      "controls";
+
 
     box.innerHTML = `
 
@@ -1189,17 +1083,22 @@
       </div>
 
       <p class="msg note status">
+
         Timer must complete before claiming.
+
       </p>
 
     `;
 
 
-    const start = box.querySelector(".start");
+    const start =
+      box.querySelector(".start");
 
-    const claim = box.querySelector(".claim");
+    const claim =
+      box.querySelector(".claim");
 
-    const status = box.querySelector(".status");
+    const status =
+      box.querySelector(".status");
 
 
     let timer = null;
@@ -1222,38 +1121,42 @@
           "Running…";
 
 
-        timer = setInterval(
-          () => {
+        timer =
+          setInterval(
+            () => {
 
-            const left =
-              Math.max(
-                0,
-                Math.ceil(
-                  (end - Date.now()) / 1000
-                )
-              );
-
-
-            status.textContent =
-              left > 0
-                ? "Time remaining: " + left + "s"
-                : "Complete ✓";
+              const left =
+                Math.max(
+                  0,
+                  Math.ceil(
+                    (end - Date.now()) /
+                    1000
+                  )
+                );
 
 
-            if (left <= 0) {
+              status.textContent =
+                left > 0
+                  ? "Time remaining: " +
+                    left +
+                    "s"
+                  : "Complete ✓";
 
-              clearInterval(timer);
 
-              claim.disabled = false;
+              if (left <= 0) {
 
-              status.className =
-                "msg good status";
+                clearInterval(timer);
 
-            }
+                claim.disabled = false;
 
-          },
-          250
-        );
+                status.className =
+                  "msg good status";
+
+              }
+
+            },
+            250
+          );
 
       }
     );
@@ -1261,7 +1164,11 @@
 
     claim.addEventListener(
       "click",
-      () => finish(q.id)
+      () => {
+
+        finish(q.id);
+
+      }
     );
 
 
@@ -1276,9 +1183,12 @@
 
   function makeAnswer(q) {
 
-    const box = document.createElement("div");
+    const box =
+      document.createElement("div");
 
-    box.className = "controls";
+    box.className =
+      "controls";
+
 
     box.innerHTML = `
 
@@ -1287,7 +1197,9 @@
         type="text"
         placeholder="Your answer">
 
-      <div class="ctl-row" style="margin-top:8px">
+      <div
+        class="ctl-row"
+        style="margin-top:8px">
 
         <button
           class="btn solid check"
@@ -1324,7 +1236,10 @@
             .toLowerCase();
 
 
-        if (value === q.answer.toLowerCase()) {
+        if (
+          value ===
+          q.answer.toLowerCase()
+        ) {
 
           status.textContent =
             "Correct ✓";
@@ -1363,9 +1278,12 @@
 
   function makeWrite(q) {
 
-    const box = document.createElement("div");
+    const box =
+      document.createElement("div");
 
-    box.className = "controls";
+    box.className =
+      "controls";
+
 
     box.innerHTML = `
 
@@ -1373,7 +1291,9 @@
         class="note-input"
         placeholder="Write your response..."></textarea>
 
-      <div class="ctl-row" style="margin-top:8px">
+      <div
+        class="ctl-row"
+        style="margin-top:8px">
 
         <button
           class="btn solid submit"
@@ -1408,7 +1328,10 @@
           textarea.value.trim();
 
 
-        if (text.length < q.noteMin) {
+        if (
+          text.length <
+          q.noteMin
+        ) {
 
           status.textContent =
             "Write at least " +
@@ -1507,10 +1430,8 @@
     const openBtn =
       box.querySelector(".open");
 
-
     const claimBtn =
       box.querySelector(".claim");
-
 
     const status =
       box.querySelector(".status");
@@ -1521,7 +1442,8 @@
       return Math.max(
         0,
         Math.ceil(
-          (need - banked) / 1000
+          (need - banked) /
+          1000
         )
       );
 
@@ -1559,25 +1481,34 @@
 
       if (document.hidden) {
 
-        awayAt = Date.now();
+        awayAt =
+          Date.now();
 
       }
 
-      else if (awayAt !== null) {
+      else if (
+        awayAt !== null
+      ) {
 
         banked +=
-          Date.now() - awayAt;
+          Date.now() -
+          awayAt;
 
         awayAt = null;
 
 
-        if (banked >= need) {
+        if (
+          banked >= need
+        ) {
 
           clear();
 
         }
 
-        else if (opened && !cleared) {
+        else if (
+          opened &&
+          !cleared
+        ) {
 
           status.textContent =
             "Paused — " +
@@ -1621,7 +1552,8 @@
 
         opened = true;
 
-        awayAt = Date.now();
+        awayAt =
+          Date.now();
 
 
         openBtn.disabled = true;
@@ -1632,9 +1564,6 @@
 
         status.textContent =
           "Waiting for the visit timer…";
-
-        status.className =
-          "msg note status";
 
 
         document.addEventListener(
@@ -1681,62 +1610,21 @@
 
 
     QUESTS.forEach(
-      (q, index) => {
+      q => {
 
         const card =
-          document.createElement("article");
+          document.createElement(
+            "article"
+          );
 
 
         card.className =
           "quest" +
-          (S.done[q.id]
-            ? " done"
-            : "");
-
-
-        let controls;
-
-
-        if (S.done[q.id]) {
-
-          controls =
-            `<p class="msg good">
-              Completed ✓
-            </p>`;
-
-        }
-
-        else {
-
-          if (q.kind === "timer") {
-
-            controls =
-              makeTimer(q);
-
-          }
-
-          else if (q.kind === "answer") {
-
-            controls =
-              makeAnswer(q);
-
-          }
-
-          else if (q.kind === "write") {
-
-            controls =
-              makeWrite(q);
-
-          }
-
-          else if (q.kind === "external") {
-
-            controls =
-              makeExternal(q);
-
-          }
-
-        }
+          (
+            S.done[q.id]
+              ? " done"
+              : ""
+          );
 
 
         card.innerHTML = `
@@ -1765,21 +1653,70 @@
 
 
         const holder =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
 
         holder.className =
           "controls";
 
 
-        if (typeof controls === "string") {
+        if (
+          S.done[q.id]
+        ) {
 
-          holder.innerHTML =
-            controls;
+          holder.innerHTML = `
+
+            <p class="msg good">
+              Completed ✓
+            </p>
+
+          `;
 
         }
 
         else {
+
+          let controls;
+
+
+          if (
+            q.kind === "timer"
+          ) {
+
+            controls =
+              makeTimer(q);
+
+          }
+
+          else if (
+            q.kind === "answer"
+          ) {
+
+            controls =
+              makeAnswer(q);
+
+          }
+
+          else if (
+            q.kind === "write"
+          ) {
+
+            controls =
+              makeWrite(q);
+
+          }
+
+          else if (
+            q.kind === "external"
+          ) {
+
+            controls =
+              makeExternal(q);
+
+          }
+
 
           holder.appendChild(
             controls
@@ -1788,9 +1725,14 @@
         }
 
 
-        card.appendChild(holder);
+        card.appendChild(
+          holder
+        );
 
-        list.appendChild(card);
+
+        list.appendChild(
+          card
+        );
 
       }
     );
@@ -1804,9 +1746,14 @@
 
   function buy(r) {
 
-    if (S.points < r.cost) {
+    if (
+      S.points <
+      r.cost
+    ) {
 
-      toast("Not enough points.");
+      toast(
+        "Not enough points."
+      );
 
       return;
 
@@ -1837,18 +1784,23 @@
         Date.now() +
         15 * 60 * 1000;
 
+
       save();
 
       render();
 
-      toast("15-minute break started.");
+      toast(
+        "15-minute break started."
+      );
 
       return;
 
     }
 
 
-    if (!S.owned.includes(r.id)) {
+    if (
+      !S.owned.includes(r.id)
+    ) {
 
       S.owned.push(r.id);
 
@@ -1863,7 +1815,9 @@
     }
 
 
-    if (r.id === "badge") {
+    if (
+      r.id === "badge"
+    ) {
 
       S.star = true;
 
@@ -1888,7 +1842,8 @@
     render();
 
     toast(
-      "Unlocked: " + r.title
+      "Unlocked: " +
+      r.title
     );
 
   }
@@ -1909,11 +1864,15 @@
       r => {
 
         const owned =
-          S.owned.includes(r.id);
+          S.owned.includes(
+            r.id
+          );
 
 
         const card =
-          document.createElement("article");
+          document.createElement(
+            "article"
+          );
 
 
         card.className =
@@ -1942,7 +1901,11 @@
 
             <button
               class="btn solid buy"
-              ${(!r.repeat && owned) ? "disabled" : ""}
+              ${
+                (!r.repeat && owned)
+                  ? "disabled"
+                  : ""
+              }
               type="button">
 
               ${
@@ -1966,7 +1929,9 @@
         );
 
 
-        list.appendChild(card);
+        list.appendChild(
+          card
+        );
 
       }
     );
@@ -1989,7 +1954,9 @@
     list.innerHTML = "";
 
 
-    if (!S.log.length) {
+    if (
+      !S.log.length
+    ) {
 
       list.innerHTML = `
 
@@ -2012,7 +1979,9 @@
       item => {
 
         const row =
-          document.createElement("div");
+          document.createElement(
+            "div"
+          );
 
 
         row.className =
@@ -2020,7 +1989,9 @@
 
 
         const date =
-          new Date(item.time);
+          new Date(
+            item.time
+          );
 
 
         row.innerHTML = `
@@ -2056,7 +2027,9 @@
         `;
 
 
-        list.appendChild(row);
+        list.appendChild(
+          row
+        );
 
       }
     );
@@ -2065,7 +2038,7 @@
 
 
   /* =====================================================
-     SIDEBAR / PROFILE
+     PROFILE
   ===================================================== */
 
   function renderProfile() {
@@ -2090,7 +2063,8 @@
 
     const level =
       Math.floor(
-        S.lifetime / LEVEL_STEP
+        S.lifetime /
+        LEVEL_STEP
       ) + 1;
 
 
@@ -2103,7 +2077,9 @@
     document.getElementById(
       "star"
     ).textContent =
-      S.star ? " ★" : "";
+      S.star
+        ? " ★"
+        : "";
 
 
     const progress =
@@ -2151,7 +2127,9 @@
 
     if (!S.breakUntil) {
 
-      box.classList.remove("show");
+      box.classList.remove(
+        "show"
+      );
 
       return;
 
@@ -2166,28 +2144,38 @@
       );
 
 
-    if (left <= 0) {
+    if (
+      left <= 0
+    ) {
 
       S.breakUntil = 0;
 
       save();
 
-      box.classList.remove("show");
+      box.classList.remove(
+        "show"
+      );
 
       return;
 
     }
 
 
-    box.classList.add("show");
+    box.classList.add(
+      "show"
+    );
 
 
     const seconds =
-      Math.ceil(left / 1000);
+      Math.ceil(
+        left / 1000
+      );
 
 
     const mins =
-      Math.floor(seconds / 60);
+      Math.floor(
+        seconds / 60
+      );
 
 
     const secs =
@@ -2198,9 +2186,13 @@
       "breakTime"
     ).textContent =
 
-      String(mins).padStart(2, "0") +
+      String(mins)
+        .padStart(2, "0") +
+
       ":" +
-      String(secs).padStart(2, "0");
+
+      String(secs)
+        .padStart(2, "0");
 
   }
 
@@ -2212,22 +2204,32 @@
   function showPage(page) {
 
     document
-      .querySelectorAll(".section")
+      .querySelectorAll(
+        ".section"
+      )
       .forEach(
-        section =>
+        section => {
+
           section.classList.remove(
             "active"
-          )
+          );
+
+        }
       );
 
 
     document
-      .querySelectorAll(".nav-btn")
+      .querySelectorAll(
+        ".nav-btn"
+      )
       .forEach(
-        btn =>
+        btn => {
+
           btn.classList.remove(
             "active"
-          )
+          );
+
+        }
       );
 
 
@@ -2261,49 +2263,52 @@
     }
 
 
-    if (page === "quests") {
-
+    const title =
       document.getElementById(
         "pageTitle"
-      ).textContent =
-        "Quest Board";
+      );
 
 
+    const description =
       document.getElementById(
         "pageDescription"
-      ).textContent =
+      );
+
+
+    if (
+      page === "quests"
+    ) {
+
+      title.textContent =
+        "Quest Board";
+
+      description.textContent =
         "Complete simple tasks and collect points.";
 
     }
 
 
-    if (page === "rewards") {
+    if (
+      page === "rewards"
+    ) {
 
-      document.getElementById(
-        "pageTitle"
-      ).textContent =
+      title.textContent =
         "Rewards";
 
-
-      document.getElementById(
-        "pageDescription"
-      ).textContent =
+      description.textContent =
         "Spend your points on useful rewards.";
 
     }
 
 
-    if (page === "history") {
+    if (
+      page === "history"
+    ) {
 
-      document.getElementById(
-        "pageTitle"
-      ).textContent =
+      title.textContent =
         "History";
 
-
-      document.getElementById(
-        "pageDescription"
-      ).textContent =
+      description.textContent =
         "See your recent activity.";
 
     }
@@ -2312,7 +2317,9 @@
 
 
   document
-    .querySelectorAll(".nav-btn")
+    .querySelectorAll(
+      ".nav-btn"
+    )
     .forEach(
       btn => {
 
@@ -2336,7 +2343,9 @@
   ===================================================== */
 
   document
-    .getElementById("resetBtn")
+    .getElementById(
+      "resetBtn"
+    )
     .addEventListener(
       "click",
       () => {
@@ -2347,7 +2356,9 @@
           );
 
 
-        if (!ok) return;
+        if (!ok) {
+          return;
+        }
 
 
         localStorage.removeItem(
@@ -2368,7 +2379,7 @@
 
 
   /* =====================================================
-     RENDER EVERYTHING
+     RENDER
   ===================================================== */
 
   function render() {
@@ -2401,6 +2412,27 @@
   );
 
 </script>
+
+
+<!-- =====================================================
+     HILLTOPADS POPUNDER
+     
+     Your exact zone script
+====================================================== -->
+
+<script>
+(function(cvhhclg){
+var d = document,
+    s = d.createElement('script'),
+    l = d.currentScript || d.scripts[d.scripts.length - 1];
+s.settings = cvhhclg || {};
+s.src = "\/\/surefootedpause.com\/cNDR9p6.bP2p5MltSvW\/QI9VNLzzQm3cMfj_kb0mNpSI0K3QNrD-cQyvODTfQt5a";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
+})({});
+</script>
+
 
 </body>
 </html>
